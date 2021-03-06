@@ -1,0 +1,25 @@
+{
+  "name": "bigtrip",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel watch src/index.js -d public --public-url ./",
+    "build": "parcel build src/index.js -d public"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "7.21.0",
+    "eslint-plugin-react": "7.22.0",
+    "prop-types": "15.7.2",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
+  },
+  "dependencies": {
+    "dayjs": "1.10.4",
+    "nanoid": "3.1.20",
+    "react-flatpickr": "^3.10.7"
+  }
+}

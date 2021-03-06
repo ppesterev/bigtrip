@@ -1,0 +1,10 @@
+#local stuff
+.cache
+considerations.txt
+
+#build
+/public/index.css*
+/public/index.js*
+
+node_modules
+

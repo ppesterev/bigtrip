@@ -79,7 +79,7 @@ function TypeSelector({ type, onChange }) {
 }
 
 TypeSelector.propTypes = {
-  type: PropTypes.oneOf(...types),
+  type: PropTypes.oneOf([...types]),
   onChange: PropTypes.func
 };
 

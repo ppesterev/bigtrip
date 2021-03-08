@@ -1,9 +1,11 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import StatsChart from "./StatsChart";
 
 import { TypeCategories, types } from "../const";
 import { getTypeCategory } from "../utils";
+import shapes from "../shapes";
 
 function TransportStats({ events }) {
   const transportTypesByCount = types
@@ -35,5 +37,9 @@ function TransportStats({ events }) {
     />
   );
 }
+
+TransportStats.propTypes = {
+  events: PropTypes.arrayOf(shapes.event)
+};
 
 export default TransportStats;

@@ -1,12 +1,13 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import MoneyStats from "./MoneyStats";
 import TransportStats from "./TransportStats";
-
-import { capitalize } from "../utils";
 import TimeStats from "./TimeStats";
 
-function StatsView({ events, destinations }) {
+import shapes from "../shapes";
+
+function StatsView({ events }) {
   return (
     <section className="statistics">
       <h2 className="visually-hidden">Trip statistics</h2>
@@ -17,5 +18,9 @@ function StatsView({ events, destinations }) {
     </section>
   );
 }
+
+StatsView.propTypes = {
+  events: PropTypes.arrayOf(shapes.event)
+};
 
 export default StatsView;

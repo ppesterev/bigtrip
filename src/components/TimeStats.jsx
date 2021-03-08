@@ -1,9 +1,11 @@
 import React from "react";
+import PropTypes from "prop-types";
 import dayjs from "dayjs";
 
 import StatsChart from "./StatsChart";
 
 import { types } from "../const";
+import shapes from "../shapes";
 
 const getEventTime = (event) =>
   dayjs(event.dateTo).diff(dayjs(event.dateFrom), "hour");
@@ -30,5 +32,9 @@ function TimeStats({ events }) {
     <StatsChart {...{ title: "Time spent", dataSeries, labels, options }} />
   );
 }
+
+TimeStats.propTypes = {
+  events: PropTypes.arrayOf(shapes.event)
+};
 
 export default TimeStats;

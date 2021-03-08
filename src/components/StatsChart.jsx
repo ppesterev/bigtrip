@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
+
 import Chart from "chart.js";
 import deepmerge from "deepmerge";
 import { chartDefaultConfig } from "../chart-options";
@@ -35,14 +37,6 @@ function StatsChart({ title, dataSeries, labels, options }) {
     setChart(new Chart(canvas.current, { ...config, data }));
   }, []);
 
-  // useEffect(() => {
-  //   if (!chart) return;
-  //   canvas.current.width = 900;
-  //   canvas.current.height = dataSeries.length * (BAR_WIDTH + GAP_WIDTH);
-  //   chart.data = data;
-  //   chart.update();
-  // }, [dataSeries]);
-
   const titleClassString = title.split(/\s/).join("-").toLowerCase();
   return (
     <div className={`statistics__item statistics__item--${titleClassString}`}>
@@ -53,5 +47,12 @@ function StatsChart({ title, dataSeries, labels, options }) {
     </div>
   );
 }
+
+StatsChart.propTypes = {
+  title: PropTypes.string,
+  dataSeries: PropTypes.arrayOf(PropTypes.number),
+  labels: PropTypes.arrayOf(PropTypes.string),
+  options: PropTypes.object
+};
 
 export default StatsChart;

@@ -1,8 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import StatsChart from "./StatsChart";
 
 import { types } from "../const";
+import shapes from "../shapes";
 
 function MoneyStats({ events }) {
   const expensesByType = types
@@ -24,5 +26,9 @@ function MoneyStats({ events }) {
 
   return <StatsChart {...{ title: "Expenses", dataSeries, labels, options }} />;
 }
+
+MoneyStats.propTypes = {
+  events: PropTypes.arrayOf(shapes.event)
+};
 
 export default MoneyStats;

@@ -18,10 +18,10 @@ function EventList({
   setEditing,
   updateEvent
 }) {
-  const [sortedBy, setSortedBy] = useState(SortOptions.DEFAULT);
+  const [activeSorting, setActiveSorting] = useState(SortOptions.DEFAULT);
 
   let sorter = null;
-  switch (sortedBy) {
+  switch (activeSorting) {
     case SortOptions.TIME:
       sorter = (a, b) =>
         b.dateTo.getTime() -
@@ -54,7 +54,7 @@ function EventList({
   // break the list of events into individual lists for each day
   const sublists = [];
 
-  if (sortedBy === SortOptions.DEFAULT) {
+  if (activeSorting === SortOptions.DEFAULT) {
     for (let i = 0; i < sortedEvents.length; i++) {
       if (
         // a ney day has started
@@ -81,7 +81,10 @@ function EventList({
 
   return (
     <>
-      <SortForm sortedBy={sortedBy} onSort={setSortedBy} />
+      <SortForm
+        activeSorting={activeSorting}
+        onSortingSelected={setActiveSorting}
+      />
 
       {currentlyEditing.addingNew && (
         <EventForm {...{ destinations, offers, setEditing, updateEvent }} />

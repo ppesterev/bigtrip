@@ -1,7 +1,7 @@
 import React from "react";
 import { FilterOptions } from "../const";
 
-export default function FilterForm({ filteredBy, setFilteredBy }) {
+export default function FilterForm({ activeFilter, onFilterSelected }) {
   return (
     <form className="trip-filters" action="#" method="get">
       <div className="trip-filters__filter">
@@ -11,8 +11,8 @@ export default function FilterForm({ filteredBy, setFilteredBy }) {
           type="radio"
           name="trip-filter"
           value="everything"
-          checked={filteredBy === FilterOptions.DEFAULT}
-          onChange={() => setFilteredBy(FilterOptions.DEFAULT)}
+          checked={activeFilter === FilterOptions.DEFAULT}
+          onChange={() => onFilterSelected(FilterOptions.DEFAULT)}
         />
         <label
           className="trip-filters__filter-label"
@@ -29,8 +29,8 @@ export default function FilterForm({ filteredBy, setFilteredBy }) {
           type="radio"
           name="trip-filter"
           value="future"
-          checked={filteredBy === FilterOptions.FUTURE}
-          onChange={() => setFilteredBy(FilterOptions.FUTURE)}
+          checked={activeFilter === FilterOptions.FUTURE}
+          onChange={() => onFilterSelected(FilterOptions.FUTURE)}
         />
         <label className="trip-filters__filter-label" htmlFor="filter-future">
           Future
@@ -44,8 +44,8 @@ export default function FilterForm({ filteredBy, setFilteredBy }) {
           type="radio"
           name="trip-filter"
           value="past"
-          checked={filteredBy === FilterOptions.PAST}
-          onChange={() => setFilteredBy(FilterOptions.PAST)}
+          checked={activeFilter === FilterOptions.PAST}
+          onChange={() => onFilterSelected(FilterOptions.PAST)}
         />
         <label className="trip-filters__filter-label" htmlFor="filter-past">
           Past

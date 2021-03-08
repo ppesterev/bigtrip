@@ -3,12 +3,12 @@ import React from "react";
 
 import { SortOptions } from "../const";
 
-function SortForm({ sortedBy, onSort }) {
-  const onSortClicked = (newSortOption) => {
-    if (sortedBy === newSortOption) {
+function SortForm({ activeSorting, onSortingSelected }) {
+  const onSortClicked = (newSorting) => {
+    if (activeSorting === newSorting) {
       return;
     }
-    onSort(newSortOption);
+    onSortingSelected(newSorting);
   };
 
   return (
@@ -22,7 +22,7 @@ function SortForm({ sortedBy, onSort }) {
           type="radio"
           name="trip-sort"
           value="sort-event"
-          checked={sortedBy === SortOptions.DEFAULT}
+          checked={activeSorting === SortOptions.DEFAULT}
           onChange={(evt) =>
             evt.target.checked && onSortClicked(SortOptions.DEFAULT)
           }
@@ -39,7 +39,7 @@ function SortForm({ sortedBy, onSort }) {
           type="radio"
           name="trip-sort"
           value="sort-time"
-          checked={sortedBy === SortOptions.TIME}
+          checked={activeSorting === SortOptions.TIME}
           onChange={(evt) =>
             evt.target.checked && onSortClicked(SortOptions.TIME)
           }
@@ -59,7 +59,7 @@ function SortForm({ sortedBy, onSort }) {
           type="radio"
           name="trip-sort"
           value="sort-price"
-          checked={sortedBy === SortOptions.PRICE}
+          checked={activeSorting === SortOptions.PRICE}
           onChange={(evt) =>
             evt.target.checked && onSortClicked(SortOptions.PRICE)
           }
@@ -75,8 +75,8 @@ function SortForm({ sortedBy, onSort }) {
 }
 
 SortForm.propTypes = {
-  sortedBy: PropTypes.oneOf(Object.values(SortOptions)),
-  onSort: PropTypes.func
+  activeSorting: PropTypes.oneOf(Object.values(SortOptions)),
+  onSortingSelected: PropTypes.func
 };
 
 export default SortForm;

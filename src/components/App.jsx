@@ -20,7 +20,7 @@ function App({ data: { events: receivedEvents, destinations, offers } }) {
 
   const [view, setView] = useState(Views.HOME);
 
-  const [filteredBy, setFilteredBy] = useState(FilterOptions.DEFAULT);
+  const [activeFilter, setActiveFilter] = useState(FilterOptions.DEFAULT);
 
   const setEditing = (id, addingNew = false) => {
     setCurrentlyEditing({ addingNew, id });
@@ -54,9 +54,11 @@ function App({ data: { events: receivedEvents, destinations, offers } }) {
             <TripInfo events={events} />
             <div className="trip-main__trip-controls  trip-controls">
               <h2 className="visually-hidden">Switch trip view</h2>
-              <Menu {...{ activeView: view, setView }} />
+              <Menu {...{ activeView: view, onViewSelected: setView }} />
               <h2 className="visually-hidden">Filter events</h2>
-              <FilterForm {...{ filteredBy, setFilteredBy }} />
+              <FilterForm
+                {...{ activeFilter, onFilterSelected: setActiveFilter }}
+              />
             </div>
             <button
               className="trip-main__event-add-btn  btn  btn--big  btn--yellow"
@@ -82,7 +84,7 @@ function App({ data: { events: receivedEvents, destinations, offers } }) {
                     destinations,
                     offers,
                     currentlyEditing,
-                    filteredBy,
+                    activeFilter,
                     setEditing,
                     updateEvent
                   }}

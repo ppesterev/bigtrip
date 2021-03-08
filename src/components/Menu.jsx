@@ -1,7 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { Views } from "../const";
 
-export default function Menu({ activeView, onViewSelected }) {
+function Menu({ activeView, onViewSelected }) {
   const Link = (text, view) => (
     <a
       className={`trip-tabs__btn  ${
@@ -21,3 +23,10 @@ export default function Menu({ activeView, onViewSelected }) {
     </nav>
   );
 }
+
+Menu.propTypes = {
+  activeView: PropTypes.oneOf(Object.values(Views)),
+  onViewSelected: PropTypes.func
+};
+
+export default Menu;

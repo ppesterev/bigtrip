@@ -1,7 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { FilterOptions } from "../const";
 
-export default function FilterForm({ activeFilter, onFilterSelected }) {
+function FilterForm({ activeFilter, onFilterSelected }) {
   return (
     <form className="trip-filters" action="#" method="get">
       <div className="trip-filters__filter">
@@ -58,3 +60,10 @@ export default function FilterForm({ activeFilter, onFilterSelected }) {
     </form>
   );
 }
+
+FilterForm.propTypes = {
+  activeFilter: PropTypes.oneOf(Object.values(FilterOptions)),
+  onFilterSelected: PropTypes.func
+};
+
+export default FilterForm;

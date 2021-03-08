@@ -5,6 +5,7 @@ import Menu from "./Menu";
 import FilterForm from "./FilterForm";
 import TripInfo from "./TripInfo";
 import EventList from "./EventList";
+import StatsView from "./StatsView";
 
 import shapes from "../shapes";
 import { nanoid } from "nanoid";
@@ -63,7 +64,10 @@ function App({ data: { events: receivedEvents, destinations, offers } }) {
             <button
               className="trip-main__event-add-btn  btn  btn--big  btn--yellow"
               type="button"
-              onClick={() => setEditing(null, !currentlyEditing.addingNew)}
+              onClick={() => {
+                setView(Views.HOME);
+                setEditing(null, !currentlyEditing.addingNew);
+              }}
             >
               New event
             </button>
@@ -96,32 +100,7 @@ function App({ data: { events: receivedEvents, destinations, offers } }) {
               )}
             </section>
           )}
-          {view === Views.STATS && (
-            <section className="statistics">
-              <h2 className="visually-hidden">Trip statistics</h2>
-
-              <div className="statistics__item statistics__item--money">
-                <canvas
-                  className="statistics__chart  statistics__chart--money"
-                  width="900"
-                ></canvas>
-              </div>
-
-              <div className="statistics__item statistics__item--transport">
-                <canvas
-                  className="statistics__chart  statistics__chart--transport"
-                  width="900"
-                ></canvas>
-              </div>
-
-              <div className="statistics__item statistics__item--time-spend">
-                <canvas
-                  className="statistics__chart  statistics__chart--time"
-                  width="900"
-                ></canvas>
-              </div>
-            </section>
-          )}
+          {view === Views.STATS && <StatsView {...{ events, destinations }} />}
         </div>
       </main>
     </>

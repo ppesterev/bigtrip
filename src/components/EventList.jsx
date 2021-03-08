@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 import EventSublist from "./EventSublist";
 import SortForm from "./SortForm";
-import EventForm from "./EventForm";
+import EventForm from "./event-form/EventForm";
 
 import shapes from "../shapes";
 import { FilterOptions, SortOptions } from "../const";

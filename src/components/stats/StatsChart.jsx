@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import Chart from "chart.js";
 import deepmerge from "deepmerge";
-import { chartDefaultConfig } from "../chart-options";
+import { chartDefaultConfig } from "../../chart-options";
 
 const BAR_WIDTH = 44;
 const GAP_WIDTH = 6;

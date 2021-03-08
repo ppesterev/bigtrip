@@ -7,9 +7,9 @@ import "flatpickr/dist/themes/airbnb.css";
 import OfferSelector from "./OfferSelector";
 import TypeSelector from "./TypeSelector";
 
-import { capitalize, getTypeCategory } from "../utils";
-import { types, TypeCategories } from "../const";
-import shapes from "../shapes";
+import { capitalize, getTypeCategory } from "../../utils";
+import { types, TypeCategories } from "../../const";
+import shapes from "../../shapes";
 
 function EventForm({ event, destinations, offers, setEditing, updateEvent }) {
   const doneEditing = () => setEditing(null);

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import EventCard from "./EventCard";
-import EventForm from "./EventForm";
+import EventForm from "./event-form/EventForm";
 
 import shapes from "../shapes";
 

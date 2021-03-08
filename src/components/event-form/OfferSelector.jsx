@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { nanoid } from "nanoid";
 
-import shapes from "../shapes";
+import shapes from "../../shapes";
 
 function OfferSelector({ offer, value, onChange }) {
   const inputId = useMemo(() => nanoid(6));

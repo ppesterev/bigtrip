@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import { types, TypeCategories } from "../const";
-import { capitalize, getTypeCategory } from "../utils";
+import { types, TypeCategories } from "../../const";
+import { capitalize, getTypeCategory } from "../../utils";
 
 function TypeSelector({ type, onChange }) {
   const [isOpen, setIsOpen] = useState(false);

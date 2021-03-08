@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 
 import StatsChart from "./StatsChart";
 
-import { types } from "../const";
-import shapes from "../shapes";
+import { types } from "../../const";
+import shapes from "../../shapes";
 
 function MoneyStats({ events }) {
   const expensesByType = types

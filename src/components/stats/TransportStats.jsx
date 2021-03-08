@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import StatsChart from "./StatsChart";
 
-import { TypeCategories, types } from "../const";
-import { getTypeCategory } from "../utils";
-import shapes from "../shapes";
+import { TypeCategories, types } from "../../const";
+import { getTypeCategory } from "../../utils";
+import shapes from "../../shapes";
 
 function TransportStats({ events }) {
   const transportTypesByCount = types

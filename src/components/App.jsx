@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { nanoid } from "nanoid";
 
 import Menu from "./Menu";
 import FilterForm from "./FilterForm";
 import TripInfo from "./TripInfo";
 import EventList from "./EventList";
-import StatsView from "./StatsView";
+import StatsView from "./stats/StatsView";
 
 import shapes from "../shapes";
-import { nanoid } from "nanoid";
 import { FilterOptions, Views } from "../const";
 
 function App({ data: { events: receivedEvents, destinations, offers } }) {
@@ -100,7 +100,7 @@ function App({ data: { events: receivedEvents, destinations, offers } }) {
               )}
             </section>
           )}
-          {view === Views.STATS && <StatsView {...{ events, destinations }} />}
+          {view === Views.STATS && <StatsView {...{ events }} />}
         </div>
       </main>
     </>

@@ -5,7 +5,7 @@ import MoneyStats from "./MoneyStats";
 import TransportStats from "./TransportStats";
 import TimeStats from "./TimeStats";
 
-import shapes from "../shapes";
+import shapes from "../../shapes";
 
 function StatsView({ events }) {
   return (

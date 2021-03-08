@@ -4,8 +4,8 @@ import dayjs from "dayjs";
 
 import StatsChart from "./StatsChart";
 
-import { types } from "../const";
-import shapes from "../shapes";
+import { types } from "../../const";
+import shapes from "../../shapes";
 
 const getEventTime = (event) =>
   dayjs(event.dateTo).diff(dayjs(event.dateFrom), "hour");

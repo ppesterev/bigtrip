@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
 
@@ -10,9 +10,29 @@ import StatsView from "./stats/StatsView";
 
 import shapes from "../shapes";
 import { FilterOptions, Views } from "../const";
+import { getOffers, getDestinations, getEvents, getToken } from "../api";
 
-function App({ data: { events: receivedEvents, destinations, offers } }) {
-  const [events, setEvents] = useState(receivedEvents);
+function App() {
+  const [{ events, destinations, offers }, setTripData] = useState({
+    events: null,
+    destinations: null,
+    offers: null
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [token, setToken] = useState(getToken());
+
+  useEffect(() => {
+    setIsLoading(true);
+    Promise.all([
+      getEvents(token),
+      getDestinations(token),
+      getOffers(token)
+    ]).then((results) => {
+      const [events, destinations, offers] = results;
+      setTripData({ events, destinations, offers });
+      setIsLoading(false);
+    });
+  }, []);
 
   const [currentlyEditing, setCurrentlyEditing] = useState({
     addingNew: false,
@@ -29,13 +49,23 @@ function App({ data: { events: receivedEvents, destinations, offers } }) {
 
   const updateEvent = (id, updatedEvent) => {
     if (!id) {
-      setEvents(events.concat({ id: nanoid(), ...updatedEvent }));
+      setTripData({
+        destinations,
+        offers,
+        events: events.concat({ id: nanoid(), ...updatedEvent })
+      });
     } else if (!updatedEvent) {
-      setEvents(events.filter((event) => event.id !== id));
+      setTripData({
+        destinations,
+        offers,
+        events: events.filter((event) => event.id !== id)
+      });
     } else {
-      setEvents(
-        events.map((event) => (event.id === id ? updatedEvent : event))
-      );
+      setTripData({
+        destinations,
+        offers,
+        events: events.map((event) => (event.id === id ? updatedEvent : event))
+      });
     }
   };
 

@@ -3,8 +3,4 @@ import ReactDOM from "react-dom";
 
 import App from "./components/App";
 
-import { generateData } from "./mock-data";
-
-const data = generateData(20);
-
-ReactDOM.render(<App data={data} />, document.getElementById("app"));
+ReactDOM.render(<App />, document.getElementById("app"));

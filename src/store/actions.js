@@ -20,7 +20,7 @@ export const setEvents = (events) =>
 export const addEvent = (event) =>
   createAction(ActionTypes.ADD_EVENT, { event });
 export const updateEvent = (id, event) =>
-  createAction(ActionTypes.UPDATE_EVENT, id, { event });
+  createAction(ActionTypes.UPDATE_EVENT, { id, event });
 export const deleteEvent = (id) =>
   createAction(ActionTypes.DELETE_EVENT, { id });
 

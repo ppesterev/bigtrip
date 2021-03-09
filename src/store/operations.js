@@ -20,13 +20,13 @@ export const setEvents = () => (dispatch, getState) => {
 export const addEvent = (event) => (dispatch, getState) => {
   return api
     .createEvent(event, getState().token)
-    .then((res) => dispatch(actions.addEvent(res)));
+    .then((createdEvent) => dispatch(actions.addEvent(createdEvent)));
 };
 
 export const updateEvent = (id, event) => (dispatch, getState) => {
   return api
     .updateEvent(id, event, getState().token)
-    .then((res) => dispatch(actions.addEvent(res)));
+    .then((updatedEvent) => dispatch(actions.updateEvent(id, updatedEvent)));
 };
 
 export const deleteEvent = (id) => (dispatch, getState) => {

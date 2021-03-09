@@ -10,42 +10,34 @@ import StatsView from "./stats/StatsView";
 
 import shapes from "../shapes";
 import { FilterOptions, Views } from "../const";
-import {
-  getOffers,
-  getDestinations,
-  getEvents,
-  getToken,
-  createEvent,
-  deleteEvent,
-  updateEvent
-} from "../api";
+
 import useAsyncStore from "../hooks/use-async-store";
 import initialState from "../store/initial-state";
-import { setEventOptions, setToken } from "../store/operations";
+import {
+  addEvent,
+  deleteEvent,
+  setEventOptions,
+  setEvents,
+  setToken,
+  updateEvent
+} from "../store/operations";
 import reducer from "../store/reducer";
+import { getToken } from "../api";
 
 function App() {
-  const [tripData, setTripData] = useState({
-    events: null,
-    destinations: null,
-    offers: null
-  });
-  const { events, destinations, offers } = tripData;
+  const [store, dispatch] = useAsyncStore(reducer, initialState);
+  const { events, destinations, offers } = store;
 
-  const [token, setLocalToken] = useState(getToken());
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    dispatch(setToken(getToken()));
     setIsLoading(true);
-    Promise.all([
-      getEvents(token),
-      getDestinations(token),
-      getOffers(token)
-    ]).then((results) => {
-      const [events, destinations, offers] = results;
-      setTripData({ events, destinations, offers });
-      setIsLoading(false);
-    });
+    Promise.all([dispatch(setEventOptions()), dispatch(setEvents())]).then(
+      () => {
+        setIsLoading(false);
+      }
+    );
   }, []);
 
   const [currentlyEditing, setCurrentlyEditing] = useState({
@@ -62,31 +54,11 @@ function App() {
 
   const onEventChanged = (id, updatedEvent) => {
     if (!id) {
-      return createEvent(updatedEvent, token).then((newEvent) =>
-        setTripData({
-          destinations,
-          offers,
-          events: events.concat({ id: nanoid(), ...updatedEvent })
-        })
-      );
+      return dispatch(addEvent(updatedEvent));
     } else if (!updatedEvent) {
-      return deleteEvent(id, token).then(() =>
-        setTripData({
-          destinations,
-          offers,
-          events: events.filter((event) => event.id !== id)
-        })
-      );
+      return dispatch(deleteEvent(id));
     } else {
-      return updateEvent(id, updatedEvent, token).then((updatedEvent) =>
-        setTripData({
-          destinations,
-          offers,
-          events: events.map((event) =>
-            event.id === id ? updatedEvent : event
-          )
-        })
-      );
+      return dispatch(updateEvent(id, updatedEvent));
     }
   };
 

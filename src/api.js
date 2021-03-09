@@ -42,7 +42,9 @@ export function createEvent(event, authToken) {
     authToken,
     Methods.POST,
     JSON.stringify(eventAdapter.localToRemote(event))
-  ).then((res) => eventAdapter.remoteToLocal(res.json()));
+  )
+    .then((res) => res.json())
+    .then((remoteEvent) => eventAdapter.remoteToLocal(remoteEvent));
 }
 
 export function updateEvent(id, event, authToken) {

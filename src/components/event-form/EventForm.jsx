@@ -11,6 +11,13 @@ import { capitalize, getTypeCategory } from "../../utils";
 import { types, TypeCategories } from "../../const";
 import shapes from "../../shapes";
 
+const FormStatus = {
+  IDLE: "IDLE",
+  SAVING: "SAVING",
+  DELETING: "DELETING",
+  FAVORITING: "FAVORITING"
+};
+
 function EventForm({
   event,
   destinations,
@@ -37,6 +44,8 @@ function EventForm({
 
   const destinationInput = useRef(null);
 
+  const [status, setStatus] = useState(FormStatus.IDLE);
+
   const updateDestination = () => {
     const newDestination =
       destinations.find((dest) =>
@@ -61,6 +70,16 @@ function EventForm({
     };
   });
 
+  const applyChanges = (id, eventData, status) => {
+    setStatus(status);
+    onEventChanged(id, eventData).then(() => {
+      setStatus(FormStatus.IDLE);
+      if (status !== FormStatus.FAVORITING) {
+        doneEditing();
+      }
+    });
+  };
+
   return (
     <form
       className="trip-events__item  event  event--edit"
@@ -71,18 +90,21 @@ function EventForm({
         if (!updatedEvent.dateFrom || !updatedEvent.dateTo) {
           return;
         } // more validation later
-
-        onEventChanged(event?.id, {
-          ...updatedEvent,
-          isFavorite: event?.isFavorite || false
-        }); // favoriting is handled independently of saving
-        doneEditing();
+        applyChanges(
+          event?.id,
+          {
+            ...updatedEvent,
+            isFavorite: event?.isFavorite || false
+          },
+          FormStatus.SAVING
+        );
       }}
       onReset={() => {
         if (event) {
-          onEventChanged(event.id, null);
+          applyChanges(event.id, null, FormStatus.DELETING);
+        } else {
+          doneEditing();
         }
-        doneEditing();
       }}
     >
       <header className="event__header">
@@ -182,10 +204,14 @@ function EventForm({
         </div>
 
         <button className="event__save-btn  btn  btn--blue" type="submit">
-          Save
+          {status === FormStatus.SAVING ? "Saving..." : "Save"}
         </button>
         <button className="event__reset-btn" type="reset">
-          {event ? "Delete" : "Cancel"}
+          {event
+            ? status === FormStatus.DELETING
+              ? "Deleting..."
+              : "Delete"
+            : "Cancel"}
         </button>
 
         {/* Only if editing existing event */}
@@ -198,10 +224,14 @@ function EventForm({
               name="event-favorite"
               checked={event.isFavorite}
               onChange={(evt) =>
-                onEventChanged(event.id, {
-                  ...event,
-                  isFavorite: evt.target.checked
-                })
+                applyChanges(
+                  event.id,
+                  {
+                    ...event,
+                    isFavorite: evt.target.checked
+                  },
+                  FormStatus.FAVORITING
+                )
               }
             />
             <label className="event__favorite-btn" htmlFor="event-favorite-1">
@@ -234,8 +264,8 @@ function EventForm({
 
           <div className="event__available-offers">
             {offers
-              .filter((offer) => offer.type === updatedEvent.type)
-              .map((offer) => (
+              .find((offerGroup) => offerGroup.type === updatedEvent.type)
+              .offers.map((offer) => (
                 <OfferSelector
                   key={`${offer.title} - ${offer.price}`}
                   {...{

@@ -19,6 +19,10 @@ import {
   deleteEvent,
   updateEvent
 } from "../api";
+import useAsyncStore from "../hooks/use-async-store";
+import initialState from "../store/initial-state";
+import { setEventOptions, setToken } from "../store/operations";
+import reducer from "../store/reducer";
 
 function App() {
   const [tripData, setTripData] = useState({
@@ -28,7 +32,7 @@ function App() {
   });
   const { events, destinations, offers } = tripData;
 
-  const [token, setToken] = useState(getToken());
+  const [token, setLocalToken] = useState(getToken());
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

@@ -11,7 +11,13 @@ import { capitalize, getTypeCategory } from "../../utils";
 import { types, TypeCategories } from "../../const";
 import shapes from "../../shapes";
 
-function EventForm({ event, destinations, offers, setEditing, updateEvent }) {
+function EventForm({
+  event,
+  destinations,
+  offers,
+  setEditing,
+  onEventChanged
+}) {
   const doneEditing = () => setEditing(null);
 
   const [updatedEvent, setUpdatedEvent] = useState(
@@ -66,7 +72,7 @@ function EventForm({ event, destinations, offers, setEditing, updateEvent }) {
           return;
         } // more validation later
 
-        updateEvent(event?.id, {
+        onEventChanged(event?.id, {
           ...updatedEvent,
           isFavorite: event?.isFavorite || false
         }); // favoriting is handled independently of saving
@@ -74,7 +80,7 @@ function EventForm({ event, destinations, offers, setEditing, updateEvent }) {
       }}
       onReset={() => {
         if (event) {
-          updateEvent(event.id, null);
+          onEventChanged(event.id, null);
         }
         doneEditing();
       }}
@@ -192,7 +198,7 @@ function EventForm({ event, destinations, offers, setEditing, updateEvent }) {
               name="event-favorite"
               checked={event.isFavorite}
               onChange={(evt) =>
-                updateEvent(event.id, {
+                onEventChanged(event.id, {
                   ...event,
                   isFavorite: evt.target.checked
                 })
@@ -296,7 +302,7 @@ EventForm.propTypes = {
   destinations: PropTypes.arrayOf(shapes.destination),
   offers: PropTypes.arrayOf(shapes.offer),
   setEditing: PropTypes.func,
-  updateEvent: PropTypes.func
+  onEventChanged: PropTypes.func
 };
 
 export default EventForm;

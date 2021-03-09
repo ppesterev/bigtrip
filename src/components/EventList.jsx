@@ -16,7 +16,7 @@ function EventList({
   currentlyEditing,
   filteredBy,
   setEditing,
-  updateEvent
+  onEventChanged
 }) {
   const [activeSorting, setActiveSorting] = useState(SortOptions.DEFAULT);
 
@@ -87,7 +87,7 @@ function EventList({
       />
 
       {currentlyEditing.addingNew && (
-        <EventForm {...{ destinations, offers, setEditing, updateEvent }} />
+        <EventForm {...{ destinations, offers, setEditing, onEventChanged }} />
       )}
 
       <ul className="trip-days">
@@ -113,7 +113,7 @@ function EventList({
                 offers,
                 currentlyEditing,
                 setEditing,
-                updateEvent
+                onEventChanged
               }}
             />
           </li>
@@ -134,7 +134,7 @@ EventList.propTypes = {
   }),
   filteredBy: PropTypes.oneOf(Object.values(FilterOptions)),
   setEditing: PropTypes.func,
-  updateEvent: PropTypes.func
+  onEventChanged: PropTypes.func
 };
 
 export default EventList;

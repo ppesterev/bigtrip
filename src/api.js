@@ -14,6 +14,7 @@ function request(url, authToken, method = Methods.GET, payload = null) {
   const options = { method, headers: { Authorization: authToken } };
   if (payload && method !== "GET") {
     options.body = payload;
+    options.headers["Content-Type"] = "application/json;charset=utf-8";
   }
   return fetch(url, options).then((res) =>
     res.ok ? Promise.resolve(res) : Promise.reject(res.status)

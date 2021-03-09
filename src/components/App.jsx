@@ -10,16 +10,26 @@ import StatsView from "./stats/StatsView";
 
 import shapes from "../shapes";
 import { FilterOptions, Views } from "../const";
-import { getOffers, getDestinations, getEvents, getToken } from "../api";
+import {
+  getOffers,
+  getDestinations,
+  getEvents,
+  getToken,
+  createEvent,
+  deleteEvent,
+  updateEvent
+} from "../api";
 
 function App() {
-  const [{ events, destinations, offers }, setTripData] = useState({
+  const [tripData, setTripData] = useState({
     events: null,
     destinations: null,
     offers: null
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const { events, destinations, offers } = tripData;
+
   const [token, setToken] = useState(getToken());
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -40,32 +50,39 @@ function App() {
   });
 
   const [view, setView] = useState(Views.HOME);
-
   const [activeFilter, setActiveFilter] = useState(FilterOptions.DEFAULT);
 
   const setEditing = (id, addingNew = false) => {
     setCurrentlyEditing({ addingNew, id });
   };
 
-  const updateEvent = (id, updatedEvent) => {
+  const onEventChanged = (id, updatedEvent) => {
     if (!id) {
-      setTripData({
-        destinations,
-        offers,
-        events: events.concat({ id: nanoid(), ...updatedEvent })
-      });
+      return createEvent(updatedEvent, token).then((newEvent) =>
+        setTripData({
+          destinations,
+          offers,
+          events: events.concat({ id: nanoid(), ...updatedEvent })
+        })
+      );
     } else if (!updatedEvent) {
-      setTripData({
-        destinations,
-        offers,
-        events: events.filter((event) => event.id !== id)
-      });
+      return deleteEvent(id, token).then(() =>
+        setTripData({
+          destinations,
+          offers,
+          events: events.filter((event) => event.id !== id)
+        })
+      );
     } else {
-      setTripData({
-        destinations,
-        offers,
-        events: events.map((event) => (event.id === id ? updatedEvent : event))
-      });
+      return updateEvent(id, updatedEvent, token).then((updatedEvent) =>
+        setTripData({
+          destinations,
+          offers,
+          events: events.map((event) =>
+            event.id === id ? updatedEvent : event
+          )
+        })
+      );
     }
   };
 
@@ -120,9 +137,11 @@ function App() {
                     currentlyEditing,
                     activeFilter,
                     setEditing,
-                    updateEvent
+                    onEventChanged
                   }}
                 />
+              ) : isLoading ? (
+                <p className="trip-events__msg">Loading...</p>
               ) : (
                 <p className="trip-events__msg">
                   Click New Event to create your first point

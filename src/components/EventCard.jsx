@@ -11,6 +11,9 @@ import { TypeCategories } from "../const";
 dayjs.extend(duration);
 
 function EventCard({ event, setEditing }) {
+  const totalCost =
+    event.basePrice + event.offers.reduce((acc, offer) => acc + offer.price, 0);
+
   return (
     <div className="event">
       <div className="event__type">
@@ -49,7 +52,7 @@ function EventCard({ event, setEditing }) {
 
       <p className="event__price">
         &euro;&nbsp;
-        <span className="event__price-value">{event.basePrice}</span>
+        <span className="event__price-value">{totalCost}</span>
       </p>
 
       <h4 className="visually-hidden">Offers:</h4>

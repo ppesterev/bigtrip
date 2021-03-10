@@ -10,6 +10,7 @@ import TypeSelector from "./TypeSelector";
 import { capitalize, getTypeCategory } from "../../utils";
 import { types, TypeCategories } from "../../const";
 import shapes from "../../shapes";
+import { addEvent, deleteEvent, updateEvent } from "../../store/operations";
 
 const FormStatus = {
   IDLE: "IDLE",
@@ -18,16 +19,10 @@ const FormStatus = {
   FAVORITING: "FAVORITING"
 };
 
-function EventForm({
-  event,
-  destinations,
-  offers,
-  setEditing,
-  onEventChanged
-}) {
+function EventForm({ event, destinations, offers, setEditing, dispatch }) {
   const doneEditing = () => setEditing(null);
 
-  const [updatedEvent, setUpdatedEvent] = useState(
+  const [editedEvent, setEditedEvent] = useState(
     event || {
       type: types[0],
 
@@ -43,18 +38,15 @@ function EventForm({
   );
 
   const destinationInput = useRef(null);
-
-  const [status, setStatus] = useState(FormStatus.IDLE);
-
   const updateDestination = () => {
     const newDestination =
       destinations.find((dest) =>
         dest.name
           .toLowerCase()
           .startsWith(destinationInput.current.value.toLowerCase())
-      ) || updatedEvent.destination;
+      ) || editedEvent.destination;
 
-    setUpdatedEvent({ ...updatedEvent, destination: newDestination });
+    setEditedEvent({ ...editedEvent, destination: newDestination });
     destinationInput.current.value = newDestination.name;
   };
 
@@ -68,13 +60,39 @@ function EventForm({
     return () => {
       document.removeEventListener("keydown", closeOnEscape);
     };
-  });
+  }, []);
 
-  const applyChanges = (id, eventData, status) => {
-    setStatus(status);
-    onEventChanged(id, eventData).then(() => {
+  const [status, setStatus] = useState(FormStatus.IDLE);
+  const applyChanges = (newStatus) => {
+    if (status !== FormStatus.IDLE) {
+      return;
+    }
+
+    let action = null;
+    let submittedEvent = {
+      ...editedEvent,
+      isFavorite: event?.isFavorite || false
+    };
+    switch (newStatus) {
+      case FormStatus.SAVING:
+        action = event
+          ? updateEvent(event.id, submittedEvent)
+          : addEvent(submittedEvent);
+        break;
+      case FormStatus.DELETING:
+        action = deleteEvent(event.id);
+        break;
+      case FormStatus.FAVORITING:
+        action = updateEvent(event.id, {
+          ...event,
+          isFavorite: !event.isFavorite
+        });
+        break;
+    }
+    setStatus(newStatus);
+    dispatch(action).then(() => {
       setStatus(FormStatus.IDLE);
-      if (status !== FormStatus.FAVORITING) {
+      if (newStatus !== FormStatus.FAVORITING) {
         doneEditing();
       }
     });
@@ -82,36 +100,29 @@ function EventForm({
 
   return (
     <form
+      style={{
+        filter: status === FormStatus.IDLE ? "none" : "brightness(95%)",
+        transition: "0.1s"
+      }}
       className="trip-events__item  event  event--edit"
       action="#"
       method="post"
       onSubmit={(evt) => {
         evt.preventDefault();
-        if (!updatedEvent.dateFrom || !updatedEvent.dateTo) {
+        if (!editedEvent.dateFrom || !editedEvent.dateTo) {
           return;
         } // more validation later
-        applyChanges(
-          event?.id,
-          {
-            ...updatedEvent,
-            isFavorite: event?.isFavorite || false
-          },
-          FormStatus.SAVING
-        );
+        applyChanges(FormStatus.SAVING);
       }}
-      onReset={() => {
-        if (event) {
-          applyChanges(event.id, null, FormStatus.DELETING);
-        } else {
-          doneEditing();
-        }
-      }}
+      onReset={() =>
+        event ? applyChanges(FormStatus.DELETING) : doneEditing()
+      }
     >
       <header className="event__header">
         <TypeSelector
-          type={updatedEvent.type}
+          type={editedEvent.type}
           onChange={(value) =>
-            setUpdatedEvent({ ...updatedEvent, type: value, offers: [] })
+            setEditedEvent({ ...editedEvent, type: value, offers: [] })
           }
         />
 
@@ -120,8 +131,8 @@ function EventForm({
             className="event__label  event__type-output"
             htmlFor="event-destination-1"
           >
-            {capitalize(updatedEvent.type)}{" "}
-            {getTypeCategory(updatedEvent.type) === TypeCategories.ACTIVITY
+            {capitalize(editedEvent.type)}{" "}
+            {getTypeCategory(editedEvent.type) === TypeCategories.ACTIVITY
               ? "in"
               : "to"}
           </label>
@@ -153,13 +164,13 @@ function EventForm({
             id="event-start-time-1"
             type="text"
             name="event-start-time"
-            value={updatedEvent.dateFrom}
+            value={editedEvent.dateFrom}
             onChange={(dates) =>
-              setUpdatedEvent({ ...updatedEvent, dateFrom: dates[0] })
+              setEditedEvent({ ...editedEvent, dateFrom: dates[0] })
             }
             options={{
               dateFormat: "d/m/y H:i",
-              maxDate: updatedEvent.dateTo
+              maxDate: editedEvent.dateTo
             }}
           />
           &mdash;
@@ -172,13 +183,13 @@ function EventForm({
             id="event-end-time-1"
             type="text"
             name="event-end-time"
-            value={updatedEvent.dateTo}
+            value={editedEvent.dateTo}
             onChange={(dates) =>
-              setUpdatedEvent({ ...updatedEvent, dateTo: dates[0] })
+              setEditedEvent({ ...editedEvent, dateTo: dates[0] })
             }
             options={{
               dateFormat: "d/m/y H:i",
-              minDate: updatedEvent.dateFrom
+              minDate: editedEvent.dateFrom
             }}
           />
         </div>
@@ -193,11 +204,11 @@ function EventForm({
             id="event-price-1"
             type="text"
             name="event-price"
-            value={updatedEvent.basePrice}
+            value={editedEvent.basePrice}
             onChange={(evt) => {
               const newPrice = parseInt(evt.target.value) || 0;
               if (newPrice || newPrice === 0) {
-                setUpdatedEvent({ ...updatedEvent, basePrice: newPrice });
+                setEditedEvent({ ...editedEvent, basePrice: newPrice });
               }
             }}
           />
@@ -223,16 +234,9 @@ function EventForm({
               type="checkbox"
               name="event-favorite"
               checked={event.isFavorite}
-              onChange={(evt) =>
-                applyChanges(
-                  event.id,
-                  {
-                    ...event,
-                    isFavorite: evt.target.checked
-                  },
-                  FormStatus.FAVORITING
-                )
-              }
+              onChange={() => {
+                applyChanges(FormStatus.FAVORITING);
+              }}
             />
             <label className="event__favorite-btn" htmlFor="event-favorite-1">
               <span className="visually-hidden">Add to favorite</span>
@@ -264,53 +268,51 @@ function EventForm({
 
           <div className="event__available-offers">
             {offers
-              .find((offerGroup) => offerGroup.type === updatedEvent.type)
+              .find((offerGroup) => offerGroup.type === editedEvent.type)
               .offers.map((offer) => (
                 <OfferSelector
                   key={`${offer.title} - ${offer.price}`}
-                  {...{
-                    offer,
-                    value: updatedEvent.offers.some(
-                      // the event's selected offers include one just like this!
-                      (eventOffer) =>
-                        eventOffer.title === offer.title &&
-                        eventOffer.price === offer.price
-                    ),
-                    onChange: (evt) => {
-                      if (evt.target.checked) {
-                        setUpdatedEvent((updatedEvent) => ({
-                          ...updatedEvent,
-                          offers: updatedEvent.offers.concat(offer)
-                          // is this a problem? could we have a situation when this offer is already in?
-                        }));
-                      } else {
-                        setUpdatedEvent((updatedEvent) => ({
-                          ...updatedEvent,
-                          offers: updatedEvent.offers.filter(
-                            (eventOffer) =>
-                              eventOffer.price !== offer.price ||
-                              eventOffer.title !== offer.title
-                          )
-                        }));
-                      }
+                  offer={offer}
+                  value={editedEvent.offers.some(
+                    // the event's selected offers include one just like this!
+                    (eventOffer) =>
+                      eventOffer.title === offer.title &&
+                      eventOffer.price === offer.price
+                  )}
+                  onChange={(evt) => {
+                    if (evt.target.checked) {
+                      setEditedEvent((editedEvent) => ({
+                        ...editedEvent,
+                        offers: editedEvent.offers.concat(offer)
+                        // is this a problem? could we have a situation when this offer is already in?
+                      }));
+                    } else {
+                      setEditedEvent((editedEvent) => ({
+                        ...editedEvent,
+                        offers: editedEvent.offers.filter(
+                          (eventOffer) =>
+                            eventOffer.price !== offer.price ||
+                            eventOffer.title !== offer.title
+                        )
+                      }));
                     }
                   }}
                 />
               ))}
           </div>
         </section>
-        {updatedEvent.destination && (
+        {editedEvent.destination && (
           <section className="event__section  event__section--destination">
             <h3 className="event__section-title  event__section-title--destination">
               Destination
             </h3>
             <p className="event__destination-description">
-              {updatedEvent.destination.description}
+              {editedEvent.destination.description}
             </p>
 
             <div className="event__photos-container">
               <div className="event__photos-tape">
-                {updatedEvent.destination.pictures.map((picture) => (
+                {editedEvent.destination.pictures.map((picture) => (
                   <img
                     key={picture.src}
                     className="event__photo"
@@ -332,7 +334,7 @@ EventForm.propTypes = {
   destinations: PropTypes.arrayOf(shapes.destination),
   offers: PropTypes.arrayOf(shapes.offer),
   setEditing: PropTypes.func,
-  onEventChanged: PropTypes.func
+  dispatch: PropTypes.func
 };
 
 export default EventForm;

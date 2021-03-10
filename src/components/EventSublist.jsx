@@ -12,7 +12,7 @@ function EventSublist({
   offers,
   currentlyEditing,
   setEditing,
-  onEventChanged
+  dispatch
 }) {
   return (
     <ul className="trip-events__list">
@@ -20,7 +20,7 @@ function EventSublist({
         <li className="trip-events__item" key={event.id}>
           {event.id === currentlyEditing.id ? (
             <EventForm
-              {...{ event, destinations, offers, setEditing, onEventChanged }}
+              {...{ event, destinations, offers, setEditing, dispatch }}
             />
           ) : (
             <EventCard {...{ event, setEditing }} />
@@ -41,7 +41,7 @@ EventSublist.propTypes = {
     addingNew: PropTypes.bool
   }),
   setEditing: PropTypes.func,
-  onEventChanged: PropTypes.func
+  dispatch: PropTypes.func
 };
 
 export default EventSublist;

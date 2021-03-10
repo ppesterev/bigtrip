@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { nanoid } from "nanoid";
 
 import Menu from "./Menu";
 import FilterForm from "./FilterForm";
@@ -12,16 +11,9 @@ import shapes from "../shapes";
 import { FilterOptions, Views } from "../const";
 
 import useAsyncStore from "../hooks/use-async-store";
-import initialState from "../store/initial-state";
-import {
-  addEvent,
-  deleteEvent,
-  setEventOptions,
-  setEvents,
-  setToken,
-  updateEvent
-} from "../store/operations";
 import reducer from "../store/reducer";
+import initialState from "../store/initial-state";
+import { setEventOptions, setEvents, setToken } from "../store/operations";
 import { getToken } from "../api";
 
 function App() {
@@ -50,16 +42,6 @@ function App() {
 
   const setEditing = (id, addingNew = false) => {
     setCurrentlyEditing({ addingNew, id });
-  };
-
-  const onEventChanged = (id, updatedEvent) => {
-    if (!id) {
-      return dispatch(addEvent(updatedEvent));
-    } else if (!updatedEvent) {
-      return dispatch(deleteEvent(id));
-    } else {
-      return dispatch(updateEvent(id, updatedEvent));
-    }
   };
 
   return (
@@ -113,7 +95,7 @@ function App() {
                     currentlyEditing,
                     activeFilter,
                     setEditing,
-                    onEventChanged
+                    dispatch
                   }}
                 />
               ) : isLoading ? (

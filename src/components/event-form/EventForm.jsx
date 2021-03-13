@@ -10,7 +10,12 @@ import TypeSelector from "./TypeSelector";
 import { capitalize, getTypeCategory } from "../../utils";
 import { types, TypeCategories } from "../../const";
 import shapes from "../../shapes";
-import { addEvent, deleteEvent, updateEvent } from "../../store/operations";
+import {
+  addEvent,
+  deleteEvent,
+  updateEvent,
+  stopEditing
+} from "../../store/operations";
 
 const FormStatus = {
   IDLE: "IDLE",
@@ -19,8 +24,8 @@ const FormStatus = {
   FAVORITING: "FAVORITING"
 };
 
-function EventForm({ event, destinations, offers, setEditing, dispatch }) {
-  const doneEditing = () => setEditing(null);
+function EventForm({ event, destinations, offers, dispatch }) {
+  const doneEditing = () => dispatch(stopEditing());
 
   const [editedEvent, setEditedEvent] = useState(
     event || {

@@ -8,12 +8,19 @@ import EventList from "./EventList";
 import StatsView from "./stats/StatsView";
 
 import shapes from "../shapes";
-import { FilterOptions, Views } from "../const";
+import { FilterOptions, SortOptions, Views } from "../const";
 
 import useAsyncStore from "../hooks/use-async-store";
 import reducer from "../store/reducer";
 import initialState from "../store/initial-state";
-import { setEventOptions, setEvents, setToken } from "../store/operations";
+import {
+  setEventOptions,
+  setEvents,
+  setToken,
+  setFilter,
+  setSorting,
+  editEvent
+} from "../store/operations";
 import { getToken } from "../api";
 
 function App() {
@@ -32,17 +39,17 @@ function App() {
     );
   }, []);
 
-  const [currentlyEditing, setCurrentlyEditing] = useState({
-    addingNew: false,
-    id: null
-  });
+  // const [currentlyEditing, setCurrentlyEditing] = useState({
+  //   addingNew: false,
+  //   id: null
+  // });
 
-  const [view, setView] = useState(Views.HOME);
-  const [activeFilter, setActiveFilter] = useState(FilterOptions.DEFAULT);
+  // const [view, setView] = useState(Views.HOME);
+  // const [activeFilter, setActiveFilter] = useState(FilterOptions.DEFAULT);
 
-  const setEditing = (id, addingNew = false) => {
-    setCurrentlyEditing({ addingNew, id });
-  };
+  // const setEditing = (id, addingNew = false) => {
+  //   setCurrentlyEditing({ addingNew, id });
+  // };
 
   return (
     <>
@@ -58,20 +65,23 @@ function App() {
 
           <div className="trip-main">
             <TripInfo events={events} />
+
             <div className="trip-main__trip-controls  trip-controls">
               <h2 className="visually-hidden">Switch trip view</h2>
-              <Menu {...{ activeView: view, onViewSelected: setView }} />
+              <Menu {...{ activeView: store.view, dispatch }} />
+
               <h2 className="visually-hidden">Filter events</h2>
-              <FilterForm
-                {...{ activeFilter, onFilterSelected: setActiveFilter }}
-              />
+              <FilterForm {...{ filter: store.filter, dispatch }} />
             </div>
+
             <button
               className="trip-main__event-add-btn  btn  btn--big  btn--yellow"
               type="button"
+              disabled={store.editedEvent?.id === null}
               onClick={() => {
-                setView(Views.HOME);
-                setEditing(null, !currentlyEditing.addingNew);
+                dispatch(setSorting(SortOptions.DEFAULT));
+                dispatch(setFilter(FilterOptions.DEFAULT));
+                dispatch(editEvent(null));
               }}
             >
               New event
@@ -82,19 +92,14 @@ function App() {
 
       <main className="page-body__page-main  page-main">
         <div className="page-body__container">
-          {view === Views.HOME && (
+          {store.view === Views.HOME && (
             <section className="trip-events">
               <h2 className="visually-hidden">Trip events</h2>
 
-              {(events && events.length > 0) || currentlyEditing.addingNew ? (
+              {(events && events.length > 0) || store.editedEvent ? (
                 <EventList
                   {...{
-                    events,
-                    destinations,
-                    offers,
-                    currentlyEditing,
-                    activeFilter,
-                    setEditing,
+                    store,
                     dispatch
                   }}
                 />
@@ -107,7 +112,7 @@ function App() {
               )}
             </section>
           )}
-          {view === Views.STATS && <StatsView {...{ events }} />}
+          {store.view === Views.STATS && <StatsView {...{ events }} />}
         </div>
       </main>
     </>

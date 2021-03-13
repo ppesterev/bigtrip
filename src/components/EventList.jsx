@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 
@@ -10,18 +10,11 @@ import shapes from "../shapes";
 import { FilterOptions, SortOptions } from "../const";
 
 function EventList({
-  events,
-  destinations,
-  offers,
-  currentlyEditing,
-  filteredBy,
-  setEditing,
+  store: { events, destinations, offers, filter, sorting, editedEvent },
   dispatch
 }) {
-  const [activeSorting, setActiveSorting] = useState(SortOptions.DEFAULT);
-
   let sorter = null;
-  switch (activeSorting) {
+  switch (sorting) {
     case SortOptions.TIME:
       sorter = (a, b) =>
         b.dateTo.getTime() -
@@ -38,7 +31,7 @@ function EventList({
   }
 
   let filterer = null; // lol
-  switch (filteredBy) {
+  switch (filter) {
     case FilterOptions.FUTURE:
       filterer = (event) => event.dateFrom.getTime() > Date.now();
       break;
@@ -54,7 +47,7 @@ function EventList({
   // break the list of events into individual lists for each day
   const sublists = [];
 
-  if (activeSorting === SortOptions.DEFAULT) {
+  if (sorting === SortOptions.DEFAULT) {
     for (let i = 0; i < sortedEvents.length; i++) {
       if (
         // a ney day has started
@@ -81,13 +74,10 @@ function EventList({
 
   return (
     <>
-      <SortForm
-        activeSorting={activeSorting}
-        onSortingSelected={setActiveSorting}
-      />
+      <SortForm {...{ sorting, dispatch }} />
 
-      {currentlyEditing.addingNew && (
-        <EventForm {...{ destinations, offers, setEditing, dispatch }} />
+      {editedEvent?.id === null && (
+        <EventForm {...{ destinations, offers, dispatch }} />
       )}
 
       <ul className="trip-days">
@@ -111,8 +101,7 @@ function EventList({
                 events: sublist.events,
                 destinations,
                 offers,
-                currentlyEditing,
-                setEditing,
+                editedEvent,
                 dispatch
               }}
             />
@@ -124,16 +113,16 @@ function EventList({
 }
 
 EventList.propTypes = {
-  events: PropTypes.arrayOf(shapes.event),
-  destinations: PropTypes.arrayOf(shapes.destination),
-  offers: PropTypes.arrayOf(shapes.offer),
+  store: PropTypes.shape({
+    events: PropTypes.arrayOf(shapes.event),
+    destinations: PropTypes.arrayOf(shapes.destination),
+    offers: PropTypes.arrayOf(shapes.offer),
 
-  currentlyEditing: PropTypes.shape({
-    id: PropTypes.string,
-    addingNew: PropTypes.bool
+    editedEvent: PropTypes.shape({ id: PropTypes.any }),
+
+    filter: PropTypes.oneOf(Object.values(FilterOptions)),
+    sorting: PropTypes.oneOf(Object.values(SortOptions))
   }),
-  filteredBy: PropTypes.oneOf(Object.values(FilterOptions)),
-  setEditing: PropTypes.func,
   dispatch: PropTypes.func
 };
 

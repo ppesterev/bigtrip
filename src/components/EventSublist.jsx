@@ -6,24 +6,15 @@ import EventForm from "./event-form/EventForm";
 
 import shapes from "../shapes";
 
-function EventSublist({
-  events,
-  destinations,
-  offers,
-  currentlyEditing,
-  setEditing,
-  dispatch
-}) {
+function EventSublist({ events, destinations, offers, editedEvent, dispatch }) {
   return (
     <ul className="trip-events__list">
       {events.map((event) => (
         <li className="trip-events__item" key={event.id}>
-          {event.id === currentlyEditing.id ? (
-            <EventForm
-              {...{ event, destinations, offers, setEditing, dispatch }}
-            />
+          {event.id === editedEvent?.id ? (
+            <EventForm {...{ event, destinations, offers, dispatch }} />
           ) : (
-            <EventCard {...{ event, setEditing }} />
+            <EventCard {...{ event, dispatch }} />
           )}
         </li>
       ))}
@@ -36,11 +27,10 @@ EventSublist.propTypes = {
   destinations: PropTypes.arrayOf(shapes.destination),
   offers: PropTypes.arrayOf(shapes.offer),
 
-  currentlyEditing: PropTypes.shape({
-    id: PropTypes.string,
-    addingNew: PropTypes.bool
+  editedEvent: PropTypes.shape({
+    id: PropTypes.any
   }),
-  setEditing: PropTypes.func,
+
   dispatch: PropTypes.func
 };
 

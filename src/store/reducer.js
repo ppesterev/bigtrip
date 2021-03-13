@@ -26,7 +26,17 @@ export default function reducer(state, action) {
         offers: action.payload.offers,
         destinations: action.payload.destinations
       };
-    case ActionTypes.SWITCH_VIEW:
+    case ActionTypes.EDIT_EVENT:
+      return {
+        ...state,
+        editedEvent: { id: action.payload.id }
+      };
+    case ActionTypes.STOP_EDITING:
+      return {
+        ...state,
+        editedEvent: null
+      };
+    case ActionTypes.SET_VIEW:
       return {
         ...state,
         view: action.payload.view

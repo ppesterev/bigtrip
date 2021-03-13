@@ -7,10 +7,11 @@ import duration from "dayjs/plugin/duration";
 import shapes from "../shapes";
 import { capitalize, getTypeCategory } from "../utils";
 import { TypeCategories } from "../const";
+import { editEvent } from "../store/operations";
 
 dayjs.extend(duration);
 
-function EventCard({ event, setEditing }) {
+function EventCard({ event, dispatch }) {
   const totalCost =
     event.basePrice + event.offers.reduce((acc, offer) => acc + offer.price, 0);
 
@@ -69,7 +70,7 @@ function EventCard({ event, setEditing }) {
       <button
         className="event__rollup-btn"
         type="button"
-        onClick={() => setEditing(event.id)}
+        onClick={() => dispatch(editEvent(event.id))}
       >
         <span className="visually-hidden">Open event</span>
       </button>
@@ -79,7 +80,7 @@ function EventCard({ event, setEditing }) {
 
 EventCard.propTypes = {
   event: shapes.event,
-  setEditing: PropTypes.func
+  dispatch: PropTypes.func
 };
 
 export default EventCard;

@@ -35,4 +35,11 @@ export const deleteEvent = (id) => (dispatch, getState) => {
     .then(() => dispatch(actions.deleteEvent(id)));
 };
 
-export { switchView, setFilter, setSorting, setToken } from "./actions";
+export {
+  editEvent,
+  stopEditing,
+  switchView,
+  setFilter,
+  setSorting,
+  setToken
+} from "./actions";

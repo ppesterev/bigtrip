@@ -2,15 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Views } from "../const";
+import { setView } from "../store/operations";
 
-function Menu({ activeView, onViewSelected }) {
+function Menu({ activeView, dispatch }) {
   const Link = (text, view) => (
     <a
       className={`trip-tabs__btn  ${
         activeView === view ? "trip-tabs__btn--active" : ""
       }`}
       href="#"
-      onClick={() => onViewSelected(view)}
+      onClick={() => dispatch(setView(view))}
     >
       {text}
     </a>
@@ -26,7 +27,7 @@ function Menu({ activeView, onViewSelected }) {
 
 Menu.propTypes = {
   activeView: PropTypes.oneOf(Object.values(Views)),
-  onViewSelected: PropTypes.func
+  dispatch: PropTypes.func
 };
 
 export default Menu;

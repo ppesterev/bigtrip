@@ -1,6 +1,5 @@
 #local stuff
 .cache
-considerations.*
 
 #build
 /public/index.css*

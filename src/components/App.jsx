@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 
 import Menu from "./Menu";
 import FilterForm from "./FilterForm";
@@ -7,7 +6,6 @@ import TripInfo from "./TripInfo";
 import EventList from "./EventList";
 import StatsView from "./stats/StatsView";
 
-import shapes from "../shapes";
 import { FilterOptions, SortOptions, Views } from "../const";
 
 import useAsyncStore from "../hooks/use-async-store";
@@ -38,18 +36,6 @@ function App() {
       }
     );
   }, []);
-
-  // const [currentlyEditing, setCurrentlyEditing] = useState({
-  //   addingNew: false,
-  //   id: null
-  // });
-
-  // const [view, setView] = useState(Views.HOME);
-  // const [activeFilter, setActiveFilter] = useState(FilterOptions.DEFAULT);
-
-  // const setEditing = (id, addingNew = false) => {
-  //   setCurrentlyEditing({ addingNew, id });
-  // };
 
   return (
     <>
@@ -118,13 +104,5 @@ function App() {
     </>
   );
 }
-
-App.propTypes = {
-  data: PropTypes.shape({
-    offers: PropTypes.arrayOf(shapes.offer),
-    destinations: PropTypes.arrayOf(shapes.destination),
-    events: PropTypes.arrayOf(shapes.event)
-  })
-};
 
 export default App;

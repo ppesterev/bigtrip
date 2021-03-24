@@ -30,4 +30,4 @@ Menu.propTypes = {
   dispatch: PropTypes.func
 };
 
-export default Menu;
+export default React.memo(Menu);

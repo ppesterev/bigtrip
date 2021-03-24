@@ -84,4 +84,4 @@ TripInfo.propTypes = {
   events: PropTypes.arrayOf(shapes.event)
 };
 
-export default TripInfo;
+export default React.memo(TripInfo);

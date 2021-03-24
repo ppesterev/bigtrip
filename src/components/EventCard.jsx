@@ -83,4 +83,4 @@ EventCard.propTypes = {
   dispatch: PropTypes.func
 };
 
-export default EventCard;
+export default React.memo(EventCard);

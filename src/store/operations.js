@@ -38,7 +38,7 @@ export const deleteEvent = (id) => (dispatch, getState) => {
 export {
   editEvent,
   stopEditing,
-  switchView,
+  setView,
   setFilter,
   setSorting,
   setToken

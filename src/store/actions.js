@@ -34,8 +34,7 @@ export const deleteEvent = (id) =>
 export const editEvent = (id) => createAction(ActionTypes.EDIT_EVENT, { id });
 export const stopEditing = () => createAction(ActionTypes.STOP_EDITING, null);
 
-export const switchView = (view) =>
-  createAction(ActionTypes.SET_VIEW, { view });
+export const setView = (view) => createAction(ActionTypes.SET_VIEW, { view });
 export const setFilter = (filter) =>
   createAction(ActionTypes.SET_FILTER, { filter });
 export const setSorting = (sorting) =>

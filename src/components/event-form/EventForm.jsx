@@ -119,9 +119,10 @@ function EventForm({ event, destinations, offers, dispatch }) {
         } // more validation later
         applyChanges(FormStatus.SAVING);
       }}
-      onReset={() =>
-        event ? applyChanges(FormStatus.DELETING) : doneEditing()
-      }
+      onReset={(evt) => {
+        evt.preventDefault();
+        event ? applyChanges(FormStatus.DELETING) : doneEditing();
+      }}
     >
       <header className="event__header">
         <TypeSelector

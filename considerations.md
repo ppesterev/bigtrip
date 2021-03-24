@@ -8,8 +8,7 @@ things like getting the blank event object, or getting the category of event typ
 should go somewhere they belong  
 destination should update on datalist click, not just blur  
 managing the imperative charts from react is something else  
-getting event time should really be a method of the event class  
-unfuck offerselector callbacks
+getting event time should really be a method of the event class
 
 ~~various combinations of urls/methods/request contents have to be mapped to actions the app is actually allowed to perform~~  
 ~~instead of a url, useRequest could accept a function returning a Promise~~  
@@ -17,8 +16,7 @@ unfuck offerselector callbacks
 
 ## reqs
 
-when event form is open, should sort/filter be locked?  
-check if sort by price should take offers into account  
+disable filter option when it's empty  
 1d 0h 5m should not drop hours, i guess  
 gonna be an issue with displaying event durations longer than a year  
 actually, even just longer than a month
@@ -27,6 +25,8 @@ offline:
 on failed request, set offline flag & update localstorage state instead  
 on successful request, if was offline, send localstorage state to server
 
+~~check if sort by price should take offers into account~~ _guess so_  
+~~when event form is open, should sort/filter be locked?~~ _guess not_  
 ~~the new event button should not close the new event form, misread the reqs~~  
 ~~open/close form as operations~~  
 ~~todo include offers in the event cost~~  

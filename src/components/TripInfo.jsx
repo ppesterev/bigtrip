@@ -33,13 +33,36 @@ function TripInfo({ events }) {
   const startDate = dayjs(orderedEvents[0].dateFrom);
   const endDate = dayjs(orderedEvents[orderedEvents.length - 1].dateTo);
 
+  let routeString = null;
+  switch (events.length) {
+    case 1:
+      routeString = `${orderedEvents[0].destination.name}`;
+      break;
+    case 2:
+      routeString = `${orderedEvents[0].destination.name} — \
+${orderedEvents[1].destination.name}`;
+      break;
+    case 3:
+      routeString = `${orderedEvents[0].destination.name} — \
+${orderedEvents[1].destination.name} — \
+${orderedEvents[2].destination.name}`;
+      break;
+    default:
+      routeString = `${orderedEvents[0].destination.name} — ... — \
+${orderedEvents[1].destination.name}`;
+  }
+
+  routeString =
+    orderedEvents.length <= 3
+      ? orderedEvents.map((event) => event.destination.name).join(" — ")
+      : `${orderedEvents[0].destination.name} — ... — ${
+          orderedEvents[orderedEvents.length - 1].destination.name
+        }`;
+
   return (
     <section className="trip-main__trip-info  trip-info">
       <div className="trip-info__main">
-        <h1 className="trip-info__title">
-          {orderedEvents[0].destination.name} &mdash; ... &mdash;{" "}
-          {orderedEvents[orderedEvents.length - 1].destination.name}
-        </h1>
+        <h1 className="trip-info__title">{routeString}</h1>
 
         <p className="trip-info__dates">
           {startDate.format("MMM D")}&nbsp;&mdash;&nbsp;

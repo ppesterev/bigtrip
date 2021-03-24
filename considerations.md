@@ -1,6 +1,6 @@
-# the BigTrip project from HTMLAcademy's ECMAScript course, but rewritten in React, cause honestly that entire course is just a giant exercise in wheel reinventing"
+# the BigTrip project from HTMLAcademy's ECMAScript course, but rewritten in React, cause honestly that entire course is just a giant exercise in wheel reinventing
 
-## --- design ---
+## design
 
 offers: have to be unique within a type? could have same offer but diff 'levels' of it at diff prices?
 
@@ -28,7 +28,9 @@ getting event time should really be a method of the event class
 
 unfuck offerselector callbacks
 
-## --- reqs ---
+## reqs
+
+when event form is open, should sort/filter be locked?
 
 check if sort by price should take offers into account
 

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 import { FilterOptions } from "../const";
 import { setFilter } from "../store/operations";
-import { capitalize } from "../utils";
 
 function FilterForm({ filter, dispatch }) {
   const onFilterSelected = (newFilter) => {
@@ -13,33 +12,34 @@ function FilterForm({ filter, dispatch }) {
     dispatch(setFilter(newFilter));
   };
 
-  const options = [
-    { value: FilterOptions.DEFAULT, text: "everything" },
-    { value: FilterOptions.FUTURE, text: "future" },
-    { value: FilterOptions.PAST, text: "past" }
-  ];
+  const FilterSelector = (value, text) => {
+    const attributeText = text.toLowerCase();
+    return (
+      <div className="trip-filters__filter">
+        <input
+          id={`filter-${attributeText}`}
+          className="trip-filters__filter-input  visually-hidden"
+          type="radio"
+          name="trip-filter"
+          value={attributeText}
+          checked={filter === value}
+          onChange={() => onFilterSelected(value)}
+        />
+        <label
+          className="trip-filters__filter-label"
+          htmlFor={`filter-${attributeText}`}
+        >
+          {text}
+        </label>
+      </div>
+    );
+  };
 
   return (
     <form className="trip-filters" action="#" method="get">
-      {options.map((option) => (
-        <div className="trip-filters__filter" key={option.value}>
-          <input
-            id={`filter-${option.text}`}
-            className="trip-filters__filter-input  visually-hidden"
-            type="radio"
-            name="trip-filter"
-            value={option.text}
-            checked={filter === option.value}
-            onChange={() => onFilterSelected(option.value)}
-          />
-          <label
-            className="trip-filters__filter-label"
-            htmlFor={`filter-${option.text}`}
-          >
-            {capitalize(option.text)}
-          </label>
-        </div>
-      ))}
+      {FilterSelector(FilterOptions.DEFAULT, "Everything")}
+      {FilterSelector(FilterOptions.FUTURE, "Future")}
+      {FilterSelector(FilterOptions.PAST, "Past")}
 
       <button className="visually-hidden" type="submit">
         Accept filter

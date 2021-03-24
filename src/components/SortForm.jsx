@@ -26,7 +26,7 @@ function SortForm({ sorting, dispatch }) {
           name="trip-sort"
           value={`sort-${attributeText}`}
           checked={sorting === value}
-          onChange={(evt) => evt.target.checked && onSortingSelected(value)}
+          onChange={() => onSortingSelected(value)}
         />
         <label className="trip-sort__btn" htmlFor={`sort-${attributeText}`}>
           {text}

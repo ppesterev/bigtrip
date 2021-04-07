@@ -24,6 +24,7 @@ actually, even just longer than a month
 offline:  
 on failed request, set offline flag & update localstorage state instead  
 on successful request, if was offline, send localstorage state to server
+destinations & offers are cached - app can start offline
 
 ~~check if sort by price should take offers into account~~ _guess so_  
 ~~when event form is open, should sort/filter be locked?~~ _guess not_  

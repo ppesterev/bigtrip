@@ -1,9 +1,10 @@
 #local stuff
 .cache
+.vscode
 
 #build
-/public/index.css*
-/public/index.js*
+/public/*.css*
+/public/*.js*
 
 node_modules
 

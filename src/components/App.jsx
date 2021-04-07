@@ -19,7 +19,7 @@ import {
   setSorting,
   editEvent
 } from "../store/operations";
-import { getToken } from "../api";
+import { getToken } from "../api/network";
 
 function App() {
   const [store, dispatch] = useAsyncStore(reducer, initialState);

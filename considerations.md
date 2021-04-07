@@ -2,6 +2,8 @@
 
 ## design
 
+tidy up callbacks in eventForm - separate cbs for diff form actions, each calls applyChanges
+
 offers: have to be unique within a type? could have same offer but diff 'levels' of it at diff prices?  
 event list/sublist component structure awkward, rethink  
 things like getting the blank event object, or getting the category of event type  

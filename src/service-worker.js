@@ -42,10 +42,11 @@ self.addEventListener("fetch", (evt) => {
         return cacheResponse;
       }
       return fetch(evt.request).then((response) => {
+        const clonedResponse = response.clone();
         if (response && response.status === 200 && response.type === "basic") {
           caches
             .open(CACHE_NAME)
-            .then((cache) => cache.put(evt.request, response.clone()));
+            .then((cache) => cache.put(evt.request, clonedResponse));
         }
         return response;
       });

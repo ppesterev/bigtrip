@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 import Menu from "./Menu";
 import FilterForm from "./FilterForm";
@@ -23,7 +23,7 @@ import { getToken } from "../api";
 
 function App() {
   const [store, dispatch] = useAsyncStore(reducer, initialState);
-  const { events, destinations, offers } = store;
+  const { events, destinations, offers, filter } = store;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,6 +36,18 @@ function App() {
       }
     );
   }, []);
+
+  const filteredEvents = useMemo(() => {
+    let filteredEvents = {};
+    filteredEvents[FilterOptions.DEFAULT] = events;
+    filteredEvents[FilterOptions.FUTURE] = events.filter(
+      (event) => event.dateFrom.getTime() > Date.now()
+    );
+    filteredEvents[FilterOptions.PAST] = events.filter(
+      (event) => event.dateTo.getTime() < Date.now()
+    );
+    return filteredEvents;
+  }, [events]);
 
   return (
     <>
@@ -57,7 +69,9 @@ function App() {
               <Menu {...{ activeView: store.view, dispatch }} />
 
               <h2 className="visually-hidden">Filter events</h2>
-              <FilterForm {...{ filter: store.filter, dispatch }} />
+              <FilterForm
+                {...{ filteredEvents, filter: store.filter, dispatch }}
+              />
             </div>
 
             <button
@@ -85,7 +99,11 @@ function App() {
               {(events && events.length > 0) || store.editedEvent ? (
                 <EventList
                   {...{
-                    store,
+                    events: filteredEvents[filter],
+                    destinations,
+                    offers,
+                    sorting: store.sorting,
+                    editedEvent: store.editedEvent,
                     dispatch
                   }}
                 />

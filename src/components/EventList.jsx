@@ -10,7 +10,11 @@ import shapes from "../shapes";
 import { FilterOptions, SortOptions } from "../const";
 
 function EventList({
-  store: { events, destinations, offers, filter, sorting, editedEvent },
+  events,
+  destinations,
+  offers,
+  sorting,
+  editedEvent,
   dispatch
 }) {
   let sorter = null;
@@ -30,19 +34,7 @@ function EventList({
       sorter = (a, b) => a.dateFrom.getTime() - b.dateFrom.getTime();
   }
 
-  let filterer = null; // lol
-  switch (filter) {
-    case FilterOptions.FUTURE:
-      filterer = (event) => event.dateFrom.getTime() > Date.now();
-      break;
-    case FilterOptions.PAST:
-      filterer = (event) => event.dateTo.getTime() < Date.now();
-      break;
-    default:
-      filterer = () => true;
-  }
-
-  let sortedEvents = events.slice().filter(filterer).sort(sorter);
+  let sortedEvents = events.slice().sort(sorter);
 
   // break the list of events into individual lists for each day
   const sublists = [];
@@ -113,16 +105,14 @@ function EventList({
 }
 
 EventList.propTypes = {
-  store: PropTypes.shape({
-    events: PropTypes.arrayOf(shapes.event),
-    destinations: PropTypes.arrayOf(shapes.destination),
-    offers: PropTypes.arrayOf(shapes.offer),
+  events: PropTypes.arrayOf(shapes.event),
+  destinations: PropTypes.arrayOf(shapes.destination),
+  offers: PropTypes.arrayOf(shapes.offer),
 
-    editedEvent: PropTypes.shape({ id: PropTypes.any }),
+  editedEvent: PropTypes.shape({ id: PropTypes.any }),
 
-    filter: PropTypes.oneOf(Object.values(FilterOptions)),
-    sorting: PropTypes.oneOf(Object.values(SortOptions))
-  }),
+  filter: PropTypes.oneOf(Object.values(FilterOptions)),
+  sorting: PropTypes.oneOf(Object.values(SortOptions)),
   dispatch: PropTypes.func
 };
 

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { FilterOptions } from "../const";
 import { setFilter } from "../store/operations";
 
-function FilterForm({ filter, dispatch }) {
+function FilterForm({ filteredEvents, filter, dispatch }) {
   const onFilterSelected = (newFilter) => {
     if (filter === newFilter) {
       return;
@@ -24,6 +24,7 @@ function FilterForm({ filter, dispatch }) {
           value={attributeText}
           checked={filter === value}
           onChange={() => onFilterSelected(value)}
+          disabled={!(filteredEvents[value]?.length != 0)}
         />
         <label
           className="trip-filters__filter-label"
@@ -49,6 +50,11 @@ function FilterForm({ filter, dispatch }) {
 }
 
 FilterForm.propTypes = {
+  filteredEvents: PropTypes.shape({
+    [FilterOptions.DEFAULT]: PropTypes.array,
+    [FilterOptions.FUTURE]: PropTypes.array,
+    [FilterOptions.PAST]: PropTypes.array
+  }),
   filter: PropTypes.oneOf(Object.values(FilterOptions)),
   dispatch: PropTypes.func
 };

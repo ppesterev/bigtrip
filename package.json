@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "parcel watch src/index.js -d public --public-url ./",
-    "build": "parcel build src/index.js -d public"
+    "build": "parcel build src/index.js -d public --public-url ./"
   },
   "keywords": [],
   "author": "",

@@ -1,3 +1,5 @@
+import { types } from "./const";
+
 const CACHE_PREFIX = "bigtrip-cache";
 const CACHE_VER = "v1";
 const CACHE_NAME = `${CACHE_PREFIX}_${CACHE_VER}`;
@@ -9,7 +11,8 @@ const CACHE_FILES = [
   "/css/style.css",
   "/img/header-bg.png",
   "/img/header-bg@2x.png",
-  "/img/logo.png"
+  "/img/logo.png",
+  ...types.map((type) => `/img/icons/${type}.png`)
 ];
 
 self.addEventListener("install", (evt) => {

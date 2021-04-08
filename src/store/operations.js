@@ -11,8 +11,8 @@ export const setEventOptions = () => (dispatch, getState) => {
   if (isOnline()) {
     return Promise.all([api.getOffers(token), api.getDestinations(token)]).then(
       ([offers, destinations]) => {
-        dispatch(actions.setOptions(offers, destinations));
         storage.setEventOptions(offers, destinations);
+        dispatch(actions.setOptions(offers, destinations));
       }
     );
   }
@@ -25,8 +25,8 @@ export const setEventOptions = () => (dispatch, getState) => {
 export const setEvents = () => (dispatch, getState) => {
   if (isOnline()) {
     return api.getEvents(getState().token).then((events) => {
-      dispatch(actions.setEvents(events));
       storage.setEvents(events);
+      dispatch(actions.setEvents(events));
     });
   }
 
@@ -36,33 +36,54 @@ export const setEvents = () => (dispatch, getState) => {
 };
 
 export const addEvent = (event) => (dispatch, getState) => {
-  return api
-    .createEvent(event, getState().token)
-    .then((createdEvent) => dispatch(actions.addEvent(createdEvent)));
+  if (isOnline()) {
+    return api.createEvent(event, getState().token).then((createdEvent) => {
+      storage.updateEvent(createdEvent.id, createdEvent);
+      dispatch(actions.addEvent(createdEvent));
+    });
+  }
+
+  return Promise.resolve(storage.createEvent(event)).then((event) =>
+    dispatch(actions.addEvent(event))
+  );
 };
 
 export const updateEvent = (id, event) => (dispatch, getState) => {
-  storage.updateEvent(id, event);
   if (isOnline()) {
-    return api
-      .updateEvent(id, event, getState().token)
-      .then((updatedEvent) => dispatch(actions.updateEvent(id, updatedEvent)));
+    return api.updateEvent(id, event, getState().token).then((updatedEvent) => {
+      storage.updateEvent(id, updatedEvent);
+      dispatch(actions.updateEvent(id, updatedEvent));
+    });
   }
 
+  storage.updateEvent(id, event);
   return Promise.resolve(event).then((event) =>
     dispatch(actions.updateEvent(id, event))
   );
 };
 
 export const deleteEvent = (id) => (dispatch, getState) => {
-  storage.deleteEvent(id);
   if (isOnline()) {
-    return api
-      .deleteEvent(id, getState().token)
-      .then(() => dispatch(actions.deleteEvent(id)));
+    return api.deleteEvent(id, getState().token).then(() => {
+      storage.deleteEvent(id);
+      dispatch(actions.deleteEvent(id));
+    });
   }
 
+  storage.deleteEvent(id);
   return Promise.resolve().then(() => dispatch(actions.deleteEvent(id)));
+};
+
+export const sync = () => (dispatch, getState) => {
+  if (isOnline()) {
+    const events = storage.getEvents();
+    return api.sync(events, getState().token).then((syncedEvents) => {
+      storage.setEvents(syncedEvents);
+      dispatch(actions.setEvents(syncedEvents));
+    });
+  }
+
+  return Promise.reject("Sync failed");
 };
 
 export {

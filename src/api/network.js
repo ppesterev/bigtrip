@@ -75,3 +75,19 @@ export function getOffers(authToken) {
     .then((res) => res.json())
     .then((remoteOffers) => offerAdapter.remoteToLocal(remoteOffers));
 }
+
+export function sync(localEvents, authToken) {
+  return request(
+    `${BASE_URL}points/sync`,
+    authToken,
+    Methods.POST,
+    JSON.stringify(localEvents.map(eventAdapter.localToRemote))
+  )
+    .then((res) => res.json())
+    .then((syncData) => [
+      ...syncData.created.map(eventAdapter.remoteToLocal),
+      ...syncData.updated
+        //.filter((update) => update.success)
+        .map((update) => eventAdapter.remoteToLocal(update.payload.point))
+    ]);
+}

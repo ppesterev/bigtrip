@@ -17,9 +17,12 @@ import {
   setToken,
   setFilter,
   setSorting,
-  editEvent
+  editEvent,
+  sync
 } from "../store/operations";
 import { getToken } from "../api/network";
+
+const PAGE_TITLE = "Big Trip";
 
 function App() {
   const [store, dispatch] = useAsyncStore(reducer, initialState);
@@ -35,6 +38,27 @@ function App() {
         setIsLoading(false);
       }
     );
+  }, []);
+
+  useEffect(() => {
+    document.title = PAGE_TITLE;
+
+    const onOffline = () => {
+      console.log("offline");
+      document.title = PAGE_TITLE + " [Offline]";
+    };
+    const onOnline = () => {
+      console.log("online");
+      document.title = PAGE_TITLE;
+      dispatch(sync());
+    };
+    window.addEventListener("offline", onOffline);
+    window.addEventListener("online", onOnline);
+
+    return () => {
+      window.removeEventListener("offline", onOffline);
+      window.removeEventListener("online", onOnline);
+    };
   }, []);
 
   const filteredEvents = useMemo(() => {

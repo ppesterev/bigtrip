@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { eventAdapter } from "./adapters";
 
 const KEY_EVENTS = "events";
@@ -22,6 +23,17 @@ export function setEventOptions(offers, destinations) {
 
 export function getEventOptions() {
   return JSON.parse(localStorage.getItem(KEY_OPTIONS));
+}
+
+export function createEvent(event) {
+  let localEvent = { ...eventAdapter.localToRemote(event), id: nanoid() };
+  let storedEvents = {
+    ...JSON.parse(localStorage.getItem(KEY_EVENTS)),
+    [localEvent.id]: localEvent
+  };
+  localStorage.setItem(KEY_EVENTS, JSON.stringify(storedEvents));
+
+  return eventAdapter.remoteToLocal(localEvent);
 }
 
 export function updateEvent(id, event) {

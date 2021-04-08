@@ -68,32 +68,11 @@ function EventForm({ event, destinations, offers, dispatch }) {
   }, []);
 
   const [status, setStatus] = useState(FormStatus.IDLE);
-  const applyChanges = (newStatus) => {
+  const applyChanges = (action, newStatus) => {
     if (status !== FormStatus.IDLE) {
       return;
     }
 
-    let action = null;
-    let submittedEvent = {
-      ...editedEvent,
-      isFavorite: event?.isFavorite || false
-    };
-    switch (newStatus) {
-      case FormStatus.SAVING:
-        action = event
-          ? updateEvent(event.id, submittedEvent)
-          : addEvent(submittedEvent);
-        break;
-      case FormStatus.DELETING:
-        action = deleteEvent(event.id);
-        break;
-      case FormStatus.FAVORITING:
-        action = updateEvent(event.id, {
-          ...event,
-          isFavorite: !event.isFavorite
-        });
-        break;
-    }
     setStatus(newStatus);
     dispatch(action).then(() => {
       setStatus(FormStatus.IDLE);
@@ -101,6 +80,31 @@ function EventForm({ event, destinations, offers, dispatch }) {
         doneEditing();
       }
     });
+  };
+
+  const onSave = () => {
+    const submittedEvent = {
+      ...editedEvent,
+      isFavorite: event?.isFavorite || false
+    };
+    const action = event
+      ? updateEvent(event.id, submittedEvent)
+      : addEvent(submittedEvent);
+
+    applyChanges(action, FormStatus.SAVING);
+  };
+
+  const onDelete = () => {
+    const action = deleteEvent(event.id);
+    applyChanges(action, FormStatus.DELETING);
+  };
+
+  const onFavorite = () => {
+    const action = updateEvent(event.id, {
+      ...event,
+      isFavorite: !event.isFavorite
+    });
+    applyChanges(action, FormStatus.FAVORITING);
   };
 
   return (
@@ -117,11 +121,11 @@ function EventForm({ event, destinations, offers, dispatch }) {
         if (!editedEvent.dateFrom || !editedEvent.dateTo) {
           return;
         } // more validation later
-        applyChanges(FormStatus.SAVING);
+        onSave();
       }}
       onReset={(evt) => {
         evt.preventDefault();
-        event ? applyChanges(FormStatus.DELETING) : doneEditing();
+        event ? onDelete() : doneEditing();
       }}
     >
       <header className="event__header">
@@ -240,9 +244,7 @@ function EventForm({ event, destinations, offers, dispatch }) {
               type="checkbox"
               name="event-favorite"
               checked={event.isFavorite}
-              onChange={() => {
-                applyChanges(FormStatus.FAVORITING);
-              }}
+              onChange={onFavorite}
             />
             <label className="event__favorite-btn" htmlFor="event-favorite-1">
               <span className="visually-hidden">Add to favorite</span>

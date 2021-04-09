@@ -13,7 +13,7 @@ ${event.destination.name}`;
     if (!(event.dateTo instanceof Date) || !(event.dateFrom instanceof Date)) {
       return;
     }
-    return dayjs(event.dateFrom).diff(dayjs(event.dateTo));
+    return dayjs(event.dateTo).diff(dayjs(event.dateFrom));
   }
 
   static getFullPrice(event) {

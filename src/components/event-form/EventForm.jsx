@@ -8,7 +8,8 @@ import OfferSelector from "./OfferSelector";
 import TypeSelector from "./TypeSelector";
 
 import { capitalize, getTypeCategory } from "../../utils";
-import { types, TypeCategories } from "../../const";
+import { TypeCategories } from "../../const";
+import TripEvent from "../../models/TripEvent";
 import shapes from "../../shapes";
 import {
   addEvent,
@@ -28,18 +29,7 @@ function EventForm({ event, destinations, offers, dispatch }) {
   const doneEditing = () => dispatch(stopEditing());
 
   const [editedEvent, setEditedEvent] = useState(
-    event || {
-      type: types[0],
-
-      basePrice: 0,
-      dateFrom: null,
-      dateTo: null,
-
-      destination: null,
-      offers: [],
-
-      isFavorite: false
-    }
+    event || TripEvent.getBlankEvent()
   );
 
   const destinationInput = useRef(null);

@@ -4,16 +4,8 @@
 
 something's fishy with the title  
 on offline reload, the online check gives a false positive, the app tries to fetch initial data instead of reading from storage  
-offers: have to be unique within a type? could have same offer but diff 'levels' of it at diff prices?  
 event list/sublist component structure awkward, rethink  
-things like getting the blank event object, or getting the category of event type
-should go somewhere they belong  
-getting event time should really be a method of the event class
-
-- **Event model**
-
-destination should update on datalist click, not just blur  
-managing the imperative charts from react is something else
+destination should update on datalist click, not just blur
 
 ~~tidy up callbacks in eventForm - separate cbs for diff form actions, each calls applyChanges~~  
 ~~various combinations of urls/methods/request contents have to be mapped to actions the app is actually allowed to perform~~  
@@ -25,9 +17,6 @@ managing the imperative charts from react is something else
 1d 0h 5m should not drop hours, i guess  
 gonna be an issue with displaying event durations longer than a year  
 actually, even just longer than a month
-
-offline:  
-destinations & offers are cached - app can start offline
 
 ~~disable filter option when it's empty~~  
 ~~check if sort by price should take offers into account~~ _guess so_  

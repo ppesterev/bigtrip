@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import dayjs from "dayjs";
 
 import shapes from "../shapes";
+import TripEvent from "../models/TripEvent";
 
 function TripInfo({ events }) {
   if (!events || events.length === 0) {
@@ -22,37 +23,12 @@ function TripInfo({ events }) {
     .sort((a, b) => a.dateFrom.getTime() - b.dateFrom.getTime());
 
   const getTotalCost = () =>
-    events.reduce((acc, event) => {
-      return (
-        acc +
-        event.basePrice +
-        event.offers.reduce((acc, offer) => acc + offer.price, 0)
-      );
-    }, 0);
+    events.reduce((acc, event) => acc + TripEvent.getFullPrice(event), 0);
 
   const startDate = dayjs(orderedEvents[0].dateFrom);
   const endDate = dayjs(orderedEvents[orderedEvents.length - 1].dateTo);
 
-  let routeString = null;
-  switch (events.length) {
-    case 1:
-      routeString = `${orderedEvents[0].destination.name}`;
-      break;
-    case 2:
-      routeString = `${orderedEvents[0].destination.name} — \
-${orderedEvents[1].destination.name}`;
-      break;
-    case 3:
-      routeString = `${orderedEvents[0].destination.name} — \
-${orderedEvents[1].destination.name} — \
-${orderedEvents[2].destination.name}`;
-      break;
-    default:
-      routeString = `${orderedEvents[0].destination.name} — ... — \
-${orderedEvents[1].destination.name}`;
-  }
-
-  routeString =
+  let routeString =
     orderedEvents.length <= 3
       ? orderedEvents.map((event) => event.destination.name).join(" — ")
       : `${orderedEvents[0].destination.name} — ... — ${

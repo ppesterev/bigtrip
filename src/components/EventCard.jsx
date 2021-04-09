@@ -5,16 +5,12 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 
 import shapes from "../shapes";
-import { capitalize, getTypeCategory } from "../utils";
-import { TypeCategories } from "../const";
+import TripEvent from "../models/TripEvent";
 import { editEvent } from "../store/operations";
 
 dayjs.extend(duration);
 
 function EventCard({ event, dispatch }) {
-  const totalCost =
-    event.basePrice + event.offers.reduce((acc, offer) => acc + offer.price, 0);
-
   return (
     <div className="event">
       <div className="event__type">
@@ -26,11 +22,7 @@ function EventCard({ event, dispatch }) {
           alt="Event type icon"
         />
       </div>
-      <h3 className="event__title">
-        {capitalize(event.type)}{" "}
-        {getTypeCategory(event.type) === TypeCategories.ACTIVITY ? "in" : "to"}{" "}
-        {event.destination.name}
-      </h3>
+      <h3 className="event__title">{TripEvent.getSummary(event)}</h3>
 
       <div className="event__schedule">
         <p className="event__time">
@@ -44,7 +36,7 @@ function EventCard({ event, dispatch }) {
         </p>
         <p className="event__duration">
           {dayjs
-            .duration(dayjs(event.dateTo).diff(dayjs(event.dateFrom)))
+            .duration(TripEvent.getDuration(event))
             .format("D[d] H[h] m[m]")
             .replaceAll(/\s?(?<![0-9])0[dhm]\s?/g, " ")
             .trim()}
@@ -53,7 +45,9 @@ function EventCard({ event, dispatch }) {
 
       <p className="event__price">
         &euro;&nbsp;
-        <span className="event__price-value">{totalCost}</span>
+        <span className="event__price-value">
+          {TripEvent.getFullPrice(event)}
+        </span>
       </p>
 
       <h4 className="visually-hidden">Offers:</h4>

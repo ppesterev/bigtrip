@@ -7,14 +7,14 @@ const KEY_OPTIONS = "options";
 export function setEvents(events) {
   let storedEvents = {};
   for (const event of events) {
-    storedEvents[event.id] = eventAdapter.localToRemote(event);
+    storedEvents[event.id] = event;
   }
   localStorage.setItem(KEY_EVENTS, JSON.stringify(storedEvents));
 }
 
 export function getEvents() {
   let storedEvents = JSON.parse(localStorage.getItem(KEY_EVENTS));
-  return Object.values(storedEvents).map(eventAdapter.remoteToLocal);
+  return Object.values(storedEvents);
 }
 
 export function setEventOptions(offers, destinations) {
@@ -26,20 +26,20 @@ export function getEventOptions() {
 }
 
 export function createEvent(event) {
-  let localEvent = { ...eventAdapter.localToRemote(event), id: nanoid() };
+  let localEvent = { ...event, id: nanoid() };
   let storedEvents = {
     ...JSON.parse(localStorage.getItem(KEY_EVENTS)),
     [localEvent.id]: localEvent
   };
   localStorage.setItem(KEY_EVENTS, JSON.stringify(storedEvents));
 
-  return eventAdapter.remoteToLocal(localEvent);
+  return localEvent;
 }
 
 export function updateEvent(id, event) {
   let storedEvents = {
     ...JSON.parse(localStorage.getItem(KEY_EVENTS)),
-    [id]: eventAdapter.localToRemote(event)
+    [id]: event
   };
   localStorage.setItem(KEY_EVENTS, JSON.stringify(storedEvents));
 }

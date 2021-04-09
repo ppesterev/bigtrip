@@ -275,38 +275,36 @@ function EventForm({ event, destinations, offers, dispatch }) {
           </h3>
 
           <div className="event__available-offers">
-            {offers
-              .find((offerGroup) => offerGroup.type === editedEvent.type)
-              .offers.map((offer) => (
-                <OfferSelector
-                  key={`${offer.title} - ${offer.price}`}
-                  offer={offer}
-                  value={editedEvent.offers.some(
-                    // the event's selected offers include one just like this!
-                    (eventOffer) =>
-                      eventOffer.title === offer.title &&
-                      eventOffer.price === offer.price
-                  )}
-                  onChange={(evt) => {
-                    if (evt.target.checked) {
-                      setEditedEvent((editedEvent) => ({
-                        ...editedEvent,
-                        offers: editedEvent.offers.concat(offer)
-                        // is this a problem? could we have a situation when this offer is already in?
-                      }));
-                    } else {
-                      setEditedEvent((editedEvent) => ({
-                        ...editedEvent,
-                        offers: editedEvent.offers.filter(
-                          (eventOffer) =>
-                            eventOffer.price !== offer.price ||
-                            eventOffer.title !== offer.title
-                        )
-                      }));
-                    }
-                  }}
-                />
-              ))}
+            {offers[editedEvent.type].map((offer) => (
+              <OfferSelector
+                key={`${offer.title} - ${offer.price}`}
+                offer={offer}
+                value={editedEvent.offers.some(
+                  // the event's selected offers include one just like this!
+                  (eventOffer) =>
+                    eventOffer.title === offer.title &&
+                    eventOffer.price === offer.price
+                )}
+                onChange={(evt) => {
+                  if (evt.target.checked) {
+                    setEditedEvent((editedEvent) => ({
+                      ...editedEvent,
+                      offers: editedEvent.offers.concat(offer)
+                      // is this a problem? could we have a situation when this offer is already in?
+                    }));
+                  } else {
+                    setEditedEvent((editedEvent) => ({
+                      ...editedEvent,
+                      offers: editedEvent.offers.filter(
+                        (eventOffer) =>
+                          eventOffer.price !== offer.price ||
+                          eventOffer.title !== offer.title
+                      )
+                    }));
+                  }
+                }}
+              />
+            ))}
           </div>
         </section>
         {editedEvent.destination && (
@@ -340,7 +338,7 @@ function EventForm({ event, destinations, offers, dispatch }) {
 EventForm.propTypes = {
   event: shapes.event,
   destinations: PropTypes.arrayOf(shapes.destination),
-  offers: PropTypes.arrayOf(shapes.offer),
+  offers: PropTypes.object,
   setEditing: PropTypes.func,
   dispatch: PropTypes.func
 };

@@ -1,5 +1,4 @@
 import { nanoid } from "nanoid";
-import { destinationAdapter, eventAdapter, offerAdapter } from "./adapters";
 
 const BASE_URL = "https://11.ecmascript.pages.academy/big-trip/";
 
@@ -31,9 +30,9 @@ export function getToken() {
 }
 
 export function getEvents(authToken) {
-  return request(`${BASE_URL}points`, authToken, Methods.GET)
-    .then((res) => res.json())
-    .then((remoteEvents) => remoteEvents.map(eventAdapter.remoteToLocal));
+  return request(`${BASE_URL}points`, authToken, Methods.GET).then((res) =>
+    res.json()
+  );
 }
 
 export function createEvent(event, authToken) {
@@ -41,10 +40,8 @@ export function createEvent(event, authToken) {
     `${BASE_URL}points`,
     authToken,
     Methods.POST,
-    JSON.stringify(eventAdapter.localToRemote(event))
-  )
-    .then((res) => res.json())
-    .then((remoteEvent) => eventAdapter.remoteToLocal(remoteEvent));
+    JSON.stringify(event)
+  ).then((res) => res.json());
 }
 
 export function updateEvent(id, event, authToken) {
@@ -52,10 +49,8 @@ export function updateEvent(id, event, authToken) {
     `${BASE_URL}points/${id}`,
     authToken,
     Methods.PUT,
-    JSON.stringify(eventAdapter.localToRemote(event))
-  )
-    .then((res) => res.json())
-    .then((remoteEvent) => eventAdapter.remoteToLocal(remoteEvent));
+    JSON.stringify(event)
+  ).then((res) => res.json());
 }
 
 export function deleteEvent(id, authToken) {
@@ -63,17 +58,13 @@ export function deleteEvent(id, authToken) {
 }
 
 export function getDestinations(authToken) {
-  return request(`${BASE_URL}destinations`, authToken)
-    .then((res) => res.json())
-    .then((remoteDestinations) =>
-      destinationAdapter.remoteToLocal(remoteDestinations)
-    );
+  return request(`${BASE_URL}destinations`, authToken).then((res) =>
+    res.json()
+  );
 }
 
 export function getOffers(authToken) {
-  return request(`${BASE_URL}offers`, authToken)
-    .then((res) => res.json())
-    .then((remoteOffers) => offerAdapter.remoteToLocal(remoteOffers));
+  return request(`${BASE_URL}offers`, authToken).then((res) => res.json());
 }
 
 export function sync(localEvents, authToken) {
@@ -81,13 +72,13 @@ export function sync(localEvents, authToken) {
     `${BASE_URL}points/sync`,
     authToken,
     Methods.POST,
-    JSON.stringify(localEvents.map(eventAdapter.localToRemote))
+    JSON.stringify(localEvents)
   )
     .then((res) => res.json())
     .then((syncData) => [
-      ...syncData.created.map(eventAdapter.remoteToLocal),
+      ...syncData.created,
       ...syncData.updated
         //.filter((update) => update.success)
-        .map((update) => eventAdapter.remoteToLocal(update.payload.point))
+        .map((update) => update.payload.point)
     ]);
 }

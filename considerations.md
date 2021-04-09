@@ -2,6 +2,8 @@
 
 ## design
 
+something's fishy with the title  
+on offline reload, the online check gives a false positive, the app tries to fetch initial data instead of reading from storage  
 offers: have to be unique within a type? could have same offer but diff 'levels' of it at diff prices?  
 event list/sublist component structure awkward, rethink  
 things like getting the blank event object, or getting the category of event type

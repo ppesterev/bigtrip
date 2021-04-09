@@ -1,64 +1,56 @@
-import dayjs, { duration } from "dayjs";
+import dayjs from "dayjs";
 import { types, TypeCategories } from "../const";
 import { capitalize, getTypeCategory } from "../utils";
 
-dayjs.extend(duration);
-
 export default class TripEvent {
-  constructor({
-    type = types[0],
-    basePrice = 0,
-    dateFrom = null,
-    dateTo = null,
-    destination = null,
-    offers = [],
-    isFavorite = false
-  }) {
-    this.type = type;
-    this.basePrice = basePrice;
-    this.dateFrom = dateFrom;
-    this.dateTo = dateTo;
-
-    this.destination = destination;
-    this.offers = offers;
-
-    this.isFavorite = isFavorite;
+  static getSummary(event) {
+    return `${capitalize(event.type)} \
+${getTypeCategory(event.type) === TypeCategories.ACTIVITY ? "in" : "to"} \
+${event.destination.name}`;
   }
 
-  getSummary() {
-    return `${capitalize(this.type)} \
-${getTypeCategory(this.type) === TypeCategories.ACTIVITY ? "in" : "to"} \
-${this.destination.name}`;
-  }
-
-  getDuration() {
-    if (!(this.dateTo instanceof Date) || !(this.dateFrom instanceof Date)) {
+  static getDuration(event) {
+    if (!(event.dateTo instanceof Date) || !(event.dateFrom instanceof Date)) {
       return;
     }
-
-    return dayjs.dura;
+    return dayjs(event.dateFrom).diff(dayjs(event.dateTo));
   }
 
-  getFullPrice() {}
+  static getFullPrice(event) {
+    const { basePrice, offers } = event;
+    return basePrice + offers.reduce((acc, offer) => acc + offer.price, 0);
+  }
 
-  toRemoteShape() {
-    const remoteEvent = {
-      ["type"]: this.type,
-      ["base_price"]: this.basePrice,
-      ["date_from"]: this.dateFrom.toString(),
-      ["date_to"]: this.dateTo.toString(),
-      ["destination"]: this.destination,
-      ["offers"]: this.offers,
-      ["is_favorite"]: this.isFavorite
+  static getBlankEvent() {
+    return {
+      type: types[0],
+      basePrice: 0,
+      dateFrom: null,
+      dateTo: null,
+      destination: null,
+      offers: [],
+      isFavorite: false
     };
-    if (this.id) {
-      remoteEvent["id"] = this.id;
+  }
+
+  static toRemoteShape(event) {
+    const remoteEvent = {
+      ["type"]: event.type,
+      ["base_price"]: event.basePrice,
+      ["date_from"]: event.dateFrom.toString(),
+      ["date_to"]: event.dateTo.toString(),
+      ["destination"]: event.destination,
+      ["offers"]: event.offers,
+      ["is_favorite"]: event.isFavorite
+    };
+    if (event.id) {
+      remoteEvent["id"] = event.id;
     }
     return remoteEvent;
   }
 
-  static fromRemoteShape(remoteEvent) {
-    return new TripEvent({
+  static toLocalShape(remoteEvent) {
+    return {
       id: remoteEvent["id"],
       type: remoteEvent["type"],
       basePrice: remoteEvent["base_price"],
@@ -67,6 +59,6 @@ ${this.destination.name}`;
       destination: remoteEvent["destination"],
       offers: remoteEvent["offers"],
       isFavorite: remoteEvent["is_favorite"]
-    });
+    };
   }
 }

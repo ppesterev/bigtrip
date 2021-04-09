@@ -107,7 +107,7 @@ function EventList({
 EventList.propTypes = {
   events: PropTypes.arrayOf(shapes.event),
   destinations: PropTypes.arrayOf(shapes.destination),
-  offers: PropTypes.arrayOf(shapes.offer),
+  offers: PropTypes.object,
 
   editedEvent: PropTypes.shape({ id: PropTypes.any }),
 

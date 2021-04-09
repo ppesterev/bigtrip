@@ -3,7 +3,7 @@ import { FilterOptions, SortOptions, Views } from "../const";
 const initialState = {
   token: null,
   events: [],
-  offers: [],
+  offers: {},
   destinations: [],
 
   editedEvent: null,

@@ -1,29 +1,18 @@
-export class OfferCollection {
-  constructor(offerGroups = []) {
-    this._typeGroups = new Map();
-    for (const group in offerGroups) {
-      this._typeGroups.set(
-        group.type,
-        group.offers.map(({ title, price }) => ({
-          title,
-          price
-        }))
-      );
-    }
-  }
-
-  getOffersOfType(type) {
-    return this._typeGroups.get(type)?.slice() || [];
-  }
-
-  toRemoteShape() {
-    return [...this._typeGroups.entries()].map(([type, offers]) => ({
+export default class OfferCollection {
+  static toRemoteShape(collection) {
+    return Object.entries(collection).map(([type, offers]) => ({
       type,
       offers
     }));
   }
 
-  static fromRemoteShape(remoteOffers) {
-    return new OfferCollection(remoteOffers);
+  static toLocalShape(remoteOffers) {
+    return remoteOffers.reduce(
+      (acc, group) => ({
+        ...acc,
+        [group.type]: group.offers.slice()
+      }),
+      {}
+    );
   }
 }

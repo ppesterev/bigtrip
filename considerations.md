@@ -2,19 +2,18 @@
 
 ## design
 
-tidy up callbacks in eventForm - separate cbs for diff form actions, each calls applyChanges
-
 offers: have to be unique within a type? could have same offer but diff 'levels' of it at diff prices?  
 event list/sublist component structure awkward, rethink  
-things like getting the blank event object, or getting the category of event type  
-should go somewhere they belong
+things like getting the blank event object, or getting the category of event type
+should go somewhere they belong  
+getting event time should really be a method of the event class
 
 - **Event model**
 
 destination should update on datalist click, not just blur  
-managing the imperative charts from react is something else  
-getting event time should really be a method of the event class
+managing the imperative charts from react is something else
 
+~~tidy up callbacks in eventForm - separate cbs for diff form actions, each calls applyChanges~~  
 ~~various combinations of urls/methods/request contents have to be mapped to actions the app is actually allowed to perform~~  
 ~~instead of a url, useRequest could accept a function returning a Promise~~  
 ~~offers come in in a different shape, adjust~~

@@ -1,5 +1,4 @@
 import { nanoid } from "nanoid";
-import { eventAdapter } from "./adapters";
 
 const KEY_EVENTS = "events";
 const KEY_OPTIONS = "options";

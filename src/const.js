@@ -22,24 +22,24 @@ export const types = [
   "restaurant"
 ];
 
-export const TypeCategories = {
+export const TypeCategory = {
   TRANSPORT: "transport",
   ACTIVITY: "activity"
 };
 
-export const FilterOptions = {
+export const FilterOption = {
   DEFAULT: "default",
   PAST: "past",
   FUTURE: "future"
 };
 
-export const SortOptions = {
+export const SortOption = {
   DEFAULT: "default",
   TIME: "time",
   PRICE: "price"
 };
 
-export const Views = {
+export const View = {
   HOME: "home",
   STATS: "stats"
 };

@@ -6,7 +6,7 @@ import TripInfo from "./TripInfo";
 import EventList from "./EventList";
 import StatsView from "./stats/StatsView";
 
-import { FilterOptions, SortOptions, Views } from "../const";
+import { FilterOption, SortOption, View } from "../const";
 
 import useAsyncStore from "../hooks/use-async-store";
 import useExtendedReducer from "../hooks/use-extended-reducer";
@@ -70,11 +70,11 @@ function App() {
 
   const filteredEvents = useMemo(() => {
     let filteredEvents = {};
-    filteredEvents[FilterOptions.DEFAULT] = events;
-    filteredEvents[FilterOptions.FUTURE] = events.filter(
+    filteredEvents[FilterOption.DEFAULT] = events;
+    filteredEvents[FilterOption.FUTURE] = events.filter(
       (event) => event.dateFrom.getTime() > Date.now()
     );
-    filteredEvents[FilterOptions.PAST] = events.filter(
+    filteredEvents[FilterOption.PAST] = events.filter(
       (event) => event.dateTo.getTime() < Date.now()
     );
     return filteredEvents;
@@ -110,8 +110,8 @@ function App() {
               type="button"
               disabled={store.editedEvent?.id === null}
               onClick={() => {
-                dispatch(setSorting(SortOptions.DEFAULT));
-                dispatch(setFilter(FilterOptions.DEFAULT));
+                dispatch(setSorting(SortOption.DEFAULT));
+                dispatch(setFilter(FilterOption.DEFAULT));
                 dispatch(editEvent(null));
               }}
             >
@@ -123,7 +123,7 @@ function App() {
 
       <main className="page-body__page-main  page-main">
         <div className="page-body__container">
-          {store.view === Views.HOME && (
+          {store.view === View.HOME && (
             <section className="trip-events">
               <h2 className="visually-hidden">Trip events</h2>
 
@@ -147,7 +147,7 @@ function App() {
               )}
             </section>
           )}
-          {store.view === Views.STATS && <StatsView {...{ events }} />}
+          {store.view === View.STATS && <StatsView {...{ events }} />}
         </div>
       </main>
     </>

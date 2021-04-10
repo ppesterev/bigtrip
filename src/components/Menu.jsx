@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Views } from "../const";
+import { View } from "../const";
 import { setView } from "../store/actions";
 
 function Menu({ activeView, dispatch }) {
@@ -19,14 +19,14 @@ function Menu({ activeView, dispatch }) {
 
   return (
     <nav className="trip-controls__trip-tabs  trip-tabs">
-      {Link("Table", Views.HOME)}
-      {Link("Stats", Views.STATS)}
+      {Link("Table", View.HOME)}
+      {Link("Stats", View.STATS)}
     </nav>
   );
 }
 
 Menu.propTypes = {
-  activeView: PropTypes.oneOf(Object.values(Views)),
+  activeView: PropTypes.oneOf(Object.values(View)),
   dispatch: PropTypes.func
 };
 

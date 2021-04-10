@@ -1,4 +1,4 @@
-import { TypeCategories } from "./const";
+import { TypeCategory } from "./const";
 
 export function shuffleArray(originalArray) {
   let arr = originalArray.slice();
@@ -24,7 +24,7 @@ export function capitalize(str) {
 
 export function getTypeCategory(type) {
   if (["check-in", "sightseeing", "restaurant"].includes(type)) {
-    return TypeCategories.ACTIVITY;
+    return TypeCategory.ACTIVITY;
   }
-  return TypeCategories.TRANSPORT;
+  return TypeCategory.TRANSPORT;
 }

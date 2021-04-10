@@ -1,4 +1,4 @@
-export const ActionTypes = {
+export const ActionType = {
   SET_TOKEN: "SET_TOKEN",
   SET_EVENT_OPTIONS: "SET_EVENT_OPTIONS",
   SET_EVENTS: "SET_EVENTS",
@@ -20,26 +20,26 @@ export const ActionTypes = {
 const createAction = (type, payload) => ({ type, payload });
 
 export const setToken = (token) =>
-  createAction(ActionTypes.SET_TOKEN, { token });
+  createAction(ActionType.SET_TOKEN, { token });
 export const setEventOptions = (offers, destinations) =>
-  createAction(ActionTypes.SET_EVENT_OPTIONS, { offers, destinations });
+  createAction(ActionType.SET_EVENT_OPTIONS, { offers, destinations });
 export const setEvents = (events) =>
-  createAction(ActionTypes.SET_EVENTS, { events });
+  createAction(ActionType.SET_EVENTS, { events });
 
 export const addEvent = (event) =>
-  createAction(ActionTypes.ADD_EVENT, { event });
+  createAction(ActionType.ADD_EVENT, { event });
 export const updateEvent = (id, event) =>
-  createAction(ActionTypes.UPDATE_EVENT, { id, event });
+  createAction(ActionType.UPDATE_EVENT, { id, event });
 export const deleteEvent = (id) =>
-  createAction(ActionTypes.DELETE_EVENT, { id });
+  createAction(ActionType.DELETE_EVENT, { id });
 
-export const sync = () => createAction(ActionTypes.SYNC, null);
+export const sync = () => createAction(ActionType.SYNC, null);
 
-export const editEvent = (id) => createAction(ActionTypes.EDIT_EVENT, { id });
-export const stopEditing = () => createAction(ActionTypes.STOP_EDITING, null);
+export const editEvent = (id) => createAction(ActionType.EDIT_EVENT, { id });
+export const stopEditing = () => createAction(ActionType.STOP_EDITING, null);
 
-export const setView = (view) => createAction(ActionTypes.SET_VIEW, { view });
+export const setView = (view) => createAction(ActionType.SET_VIEW, { view });
 export const setFilter = (filter) =>
-  createAction(ActionTypes.SET_FILTER, { filter });
+  createAction(ActionType.SET_FILTER, { filter });
 export const setSorting = (sorting) =>
-  createAction(ActionTypes.SET_SORTING, { sorting });
+  createAction(ActionType.SET_SORTING, { sorting });

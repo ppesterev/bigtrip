@@ -7,7 +7,7 @@ import SortForm from "./SortForm";
 import EventForm from "./event-form/EventForm";
 
 import shapes from "../shapes";
-import { FilterOptions, SortOptions } from "../const";
+import { FilterOption, SortOption } from "../const";
 
 function EventList({
   events,
@@ -19,14 +19,14 @@ function EventList({
 }) {
   let sorter = null;
   switch (sorting) {
-    case SortOptions.TIME:
+    case SortOption.TIME:
       sorter = (a, b) =>
         b.dateTo.getTime() -
         b.dateFrom.getTime() -
         (a.dateTo.getTime() - a.dateFrom.getTime());
       break;
 
-    case SortOptions.PRICE:
+    case SortOption.PRICE:
       sorter = (a, b) => b.basePrice - a.basePrice;
       break;
 
@@ -39,7 +39,7 @@ function EventList({
   // break the list of events into individual lists for each day
   const sublists = [];
 
-  if (sorting === SortOptions.DEFAULT) {
+  if (sorting === SortOption.DEFAULT) {
     for (let i = 0; i < sortedEvents.length; i++) {
       if (
         // a ney day has started
@@ -111,8 +111,8 @@ EventList.propTypes = {
 
   editedEvent: PropTypes.shape({ id: PropTypes.any }),
 
-  filter: PropTypes.oneOf(Object.values(FilterOptions)),
-  sorting: PropTypes.oneOf(Object.values(SortOptions)),
+  filter: PropTypes.oneOf(Object.values(FilterOption)),
+  sorting: PropTypes.oneOf(Object.values(SortOption)),
   dispatch: PropTypes.func
 };
 

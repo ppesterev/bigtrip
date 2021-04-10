@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
-import { types, TypeCategories } from "../const";
+import { types, TypeCategory } from "../const";
 import { capitalize, getTypeCategory } from "../utils";
 
 export default class TripEvent {
   static getSummary(event) {
     return `${capitalize(event.type)} \
-${getTypeCategory(event.type) === TypeCategories.ACTIVITY ? "in" : "to"} \
+${getTypeCategory(event.type) === TypeCategory.ACTIVITY ? "in" : "to"} \
 ${event.destination.name}`;
   }
 

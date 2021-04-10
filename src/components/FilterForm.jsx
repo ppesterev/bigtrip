@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { FilterOptions } from "../const";
+import { FilterOption } from "../const";
 import { setFilter } from "../store/actions";
 
 function FilterForm({ filteredEvents, filter, dispatch }) {
@@ -38,9 +38,9 @@ function FilterForm({ filteredEvents, filter, dispatch }) {
 
   return (
     <form className="trip-filters" action="#" method="get">
-      {FilterSelector(FilterOptions.DEFAULT, "Everything")}
-      {FilterSelector(FilterOptions.FUTURE, "Future")}
-      {FilterSelector(FilterOptions.PAST, "Past")}
+      {FilterSelector(FilterOption.DEFAULT, "Everything")}
+      {FilterSelector(FilterOption.FUTURE, "Future")}
+      {FilterSelector(FilterOption.PAST, "Past")}
 
       <button className="visually-hidden" type="submit">
         Accept filter
@@ -51,11 +51,11 @@ function FilterForm({ filteredEvents, filter, dispatch }) {
 
 FilterForm.propTypes = {
   filteredEvents: PropTypes.shape({
-    [FilterOptions.DEFAULT]: PropTypes.array,
-    [FilterOptions.FUTURE]: PropTypes.array,
-    [FilterOptions.PAST]: PropTypes.array
+    [FilterOption.DEFAULT]: PropTypes.array,
+    [FilterOption.FUTURE]: PropTypes.array,
+    [FilterOption.PAST]: PropTypes.array
   }),
-  filter: PropTypes.oneOf(Object.values(FilterOptions)),
+  filter: PropTypes.oneOf(Object.values(FilterOption)),
   dispatch: PropTypes.func
 };
 

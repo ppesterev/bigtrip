@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 
 import StatsChart from "./StatsChart";
 
-import { TypeCategories, types } from "../../const";
+import { TypeCategory, types } from "../../const";
 import { getTypeCategory } from "../../utils";
 import shapes from "../../shapes";
 
 function TransportStats({ events }) {
   const transportTypesByCount = types
-    .filter((type) => getTypeCategory(type) === TypeCategories.TRANSPORT)
+    .filter((type) => getTypeCategory(type) === TypeCategory.TRANSPORT)
     .map((type) => ({
       type,
       count: events.filter((event) => event.type === type).length
@@ -18,7 +18,7 @@ function TransportStats({ events }) {
 
   // premature (and pointless) optimization
   // const transportTypesByCount = events.reduce((typeMap, event) => {
-  //   if (getTypeCategory(event.type) !== TypeCategories.TRANSPORT) {
+  //   if (getTypeCategory(event.type) !== TypeCategory.TRANSPORT) {
   //     return typeMap;
   //   }
   //   return {...typeMap, ...{[event.type]: typeMap[event.type] + 1 || 1}};

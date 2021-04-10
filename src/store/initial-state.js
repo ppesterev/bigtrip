@@ -1,4 +1,4 @@
-import { FilterOptions, SortOptions, Views } from "../const";
+import { FilterOption, SortOption, View } from "../const";
 
 const initialState = {
   token: null,
@@ -8,9 +8,9 @@ const initialState = {
 
   editedEvent: null,
 
-  view: Views.HOME,
-  filter: FilterOptions.DEFAULT,
-  sorting: SortOptions.DEFAULT
+  view: View.HOME,
+  filter: FilterOption.DEFAULT,
+  sorting: SortOption.DEFAULT
 };
 
 export default initialState;

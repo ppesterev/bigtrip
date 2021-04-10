@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import { SortOptions } from "../const";
+import { SortOption } from "../const";
 import { setSorting } from "../store/actions";
 
 function SortForm({ sorting, dispatch }) {
@@ -39,9 +39,9 @@ function SortForm({ sorting, dispatch }) {
     <form className="trip-events__trip-sort  trip-sort" action="#" method="get">
       <span className="trip-sort__item  trip-sort__item--day"></span>
 
-      {SortSelector(SortOptions.DEFAULT, "Event")}
-      {SortSelector(SortOptions.TIME, "Time")}
-      {SortSelector(SortOptions.PRICE, "Price")}
+      {SortSelector(SortOption.DEFAULT, "Event")}
+      {SortSelector(SortOption.TIME, "Time")}
+      {SortSelector(SortOption.PRICE, "Price")}
 
       <span className="trip-sort__item  trip-sort__item--offers">Offers</span>
     </form>
@@ -49,7 +49,7 @@ function SortForm({ sorting, dispatch }) {
 }
 
 SortForm.propTypes = {
-  sorting: PropTypes.oneOf(Object.values(SortOptions)),
+  sorting: PropTypes.oneOf(Object.values(SortOption)),
   dispatch: PropTypes.func
 };
 

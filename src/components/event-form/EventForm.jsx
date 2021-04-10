@@ -8,7 +8,7 @@ import OfferSelector from "./OfferSelector";
 import TypeSelector from "./TypeSelector";
 
 import { capitalize, getTypeCategory } from "../../utils";
-import { TypeCategories } from "../../const";
+import { TypeCategory } from "../../const";
 import TripEvent from "../../models/trip-event";
 import shapes from "../../shapes";
 import {
@@ -132,7 +132,7 @@ function EventForm({ event, destinations, offers, dispatch }) {
             htmlFor="event-destination-1"
           >
             {capitalize(editedEvent.type)}{" "}
-            {getTypeCategory(editedEvent.type) === TypeCategories.ACTIVITY
+            {getTypeCategory(editedEvent.type) === TypeCategory.ACTIVITY
               ? "in"
               : "to"}
           </label>

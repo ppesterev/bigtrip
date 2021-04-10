@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import { types, TypeCategories } from "../../const";
+import { types, TypeCategory } from "../../const";
 import { capitalize, getTypeCategory } from "../../utils";
 
 function TypeSelector({ type, onChange }) {
@@ -9,10 +9,10 @@ function TypeSelector({ type, onChange }) {
 
   const typesByCategory = {
     transport: types.filter(
-      (type) => getTypeCategory(type) === TypeCategories.TRANSPORT
+      (type) => getTypeCategory(type) === TypeCategory.TRANSPORT
     ),
     activity: types.filter(
-      (type) => getTypeCategory(type) === TypeCategories.ACTIVITY
+      (type) => getTypeCategory(type) === TypeCategory.ACTIVITY
     )
   };
 

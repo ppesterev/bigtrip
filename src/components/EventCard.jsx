@@ -5,8 +5,8 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 
 import shapes from "../shapes";
-import TripEvent from "../models/TripEvent";
-import { editEvent } from "../store/operations";
+import TripEvent from "../models/trip-event";
+import { editEvent } from "../store/actions";
 
 dayjs.extend(duration);
 

@@ -9,14 +9,14 @@ import TypeSelector from "./TypeSelector";
 
 import { capitalize, getTypeCategory } from "../../utils";
 import { TypeCategories } from "../../const";
-import TripEvent from "../../models/TripEvent";
+import TripEvent from "../../models/trip-event";
 import shapes from "../../shapes";
 import {
   addEvent,
   deleteEvent,
   updateEvent,
   stopEditing
-} from "../../store/operations";
+} from "../../store/actions";
 
 const FormStatus = {
   IDLE: "IDLE",

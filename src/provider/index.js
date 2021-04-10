@@ -51,7 +51,7 @@ export default class APIProvider {
         this._optionStorage.getItem("offers")
       ),
       destinations: DestinationCollection.toLocalShape(
-        this._storage.getItem("destinations")
+        this._optionStorage.getItem("destinations")
       )
     });
   }

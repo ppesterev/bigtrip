@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import Flatpickr from "react-flatpickr";
@@ -84,6 +84,15 @@ function EventForm({ event, destinations, offers, dispatch }) {
     applyChanges(action, FormStatus.FAVORITING);
   };
 
+  const validateEvent = (event) => {
+    return (
+      event.dateTo &&
+      event.dateFrom &&
+      event.dateTo.getTime() - event.dateFrom.getTime() > 0 &&
+      destinations.find((dest) => dest.name === event.destination.name)
+    );
+  };
+
   return (
     <form
       style={{
@@ -95,9 +104,9 @@ function EventForm({ event, destinations, offers, dispatch }) {
       method="post"
       onSubmit={(evt) => {
         evt.preventDefault();
-        if (!editedEvent.dateFrom || !editedEvent.dateTo) {
+        if (!validateEvent(editedEvent)) {
           return;
-        } // more validation later
+        }
         onSave();
       }}
       onReset={(evt) => {
@@ -279,7 +288,6 @@ function EventForm({ event, destinations, offers, dispatch }) {
                     setEditedEvent((editedEvent) => ({
                       ...editedEvent,
                       offers: editedEvent.offers.concat(offer)
-                      // is this a problem? could we have a situation when this offer is already in?
                     }));
                   } else {
                     setEditedEvent((editedEvent) => ({

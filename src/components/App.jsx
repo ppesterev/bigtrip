@@ -44,7 +44,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.title = PAGE_TITLE + navigator.onLine ? "" : " [Offline]";
+    document.title = PAGE_TITLE + (navigator.onLine ? "" : " [Offline]");
 
     const onOffline = () => {
       console.log("offline");

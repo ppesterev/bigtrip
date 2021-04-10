@@ -1,3 +1,14 @@
+export const STORAGE_NAMESPACE = "bigtrip";
+
+export const API_BASE_URL = "https://11.ecmascript.pages.academy/big-trip/";
+
+export const HTTPMethod = {
+  GET: "GET",
+  POST: "POST",
+  PUT: "PUT",
+  DELETE: "DELETE"
+};
+
 export const types = [
   "taxi",
   "bus",

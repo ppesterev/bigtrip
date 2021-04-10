@@ -10,6 +10,14 @@ import { editEvent } from "../store/actions";
 
 dayjs.extend(duration);
 
+const formatDuration = (milliseconds) => {
+  const duration = dayjs.duration(milliseconds);
+  const days = duration.days() > 0 ? `${Math.floor(duration.asDays())}d` : "";
+  const hours = duration.hours() > 0 ? `${duration.hours()}h` : "";
+  const minutes = duration.minutes() > 0 ? `${duration.minutes()}m` : "";
+  return [days, hours, minutes].join(" ").trim();
+};
+
 function EventCard({ event, dispatch }) {
   return (
     <div className="event">
@@ -35,11 +43,12 @@ function EventCard({ event, dispatch }) {
           </time>
         </p>
         <p className="event__duration">
-          {dayjs
+          {/* {dayjs
             .duration(TripEvent.getDuration(event))
             .format("D[d] H[h] m[m]")
             .replaceAll(/\s?(?<![0-9])0[dhm]\s?/g, " ")
-            .trim()}
+            .trim()} */}
+          {formatDuration(TripEvent.getDuration(event))}
         </p>
       </div>
 

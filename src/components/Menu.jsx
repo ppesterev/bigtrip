@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Views } from "../const";
-import { setView } from "../store/operations";
+import { setView } from "../store/actions";
 
 function Menu({ activeView, dispatch }) {
   const Link = (text, view) => (

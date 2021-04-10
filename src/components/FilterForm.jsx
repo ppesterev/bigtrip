@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { FilterOptions } from "../const";
-import { setFilter } from "../store/operations";
+import { setFilter } from "../store/actions";
 
 function FilterForm({ filteredEvents, filter, dispatch }) {
   const onFilterSelected = (newFilter) => {

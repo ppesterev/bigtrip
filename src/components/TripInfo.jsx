@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import dayjs from "dayjs";
 
 import shapes from "../shapes";
-import TripEvent from "../models/TripEvent";
+import TripEvent from "../models/trip-event";
 
 function TripInfo({ events }) {
   if (!events || events.length === 0) {

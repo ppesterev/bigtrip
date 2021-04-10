@@ -9,8 +9,11 @@ import StatsView from "./stats/StatsView";
 import { FilterOptions, SortOptions, Views } from "../const";
 
 import useAsyncStore from "../hooks/use-async-store";
+import useExtendedReducer from "../hooks/use-extended-reducer";
 import reducer from "../store/reducer";
+import withProvider from "../middleware/with-provider";
 import initialState from "../store/initial-state";
+
 import {
   setEventOptions,
   setEvents,
@@ -19,13 +22,17 @@ import {
   setSorting,
   editEvent,
   sync
-} from "../store/operations";
+} from "../store/actions";
 import { getToken } from "../api/network";
 
 const PAGE_TITLE = "Big Trip";
 
 function App() {
-  const [store, dispatch] = useAsyncStore(reducer, initialState);
+  const [store, dispatch] = useExtendedReducer(
+    reducer,
+    [withProvider()],
+    initialState
+  );
   const { events, destinations, offers, filter } = store;
 
   const [isLoading, setIsLoading] = useState(false);

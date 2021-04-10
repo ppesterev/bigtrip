@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 
 import { SortOptions } from "../const";
-import { setSorting } from "../store/operations";
+import { setSorting } from "../store/actions";
 
 function SortForm({ sorting, dispatch }) {
   const onSortingSelected = (newSorting) => {

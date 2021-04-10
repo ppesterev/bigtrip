@@ -52,13 +52,14 @@ function EventCard({ event, dispatch }) {
 
       <h4 className="visually-hidden">Offers:</h4>
       <ul className="event__selected-offers">
-        {event.offers.map((offer) => (
+        {event.offers.slice(0, 3).map((offer) => (
           <li className="event__offer" key={`${offer.title} - ${offer.price}`}>
             <span className="event__offer-title">{offer.title}</span>
             {"+"} &euro;&nbsp;
             <span className="event__offer-price">{offer.price}</span>
           </li>
         ))}
+        {event.offers.length > 3 && <li key="endcap">...</li>}
       </ul>
 
       <button

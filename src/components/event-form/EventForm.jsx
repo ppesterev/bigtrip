@@ -32,19 +32,6 @@ function EventForm({ event, destinations, offers, dispatch }) {
     event || TripEvent.getBlankEvent()
   );
 
-  const destinationInput = useRef(null);
-  const updateDestination = () => {
-    const newDestination =
-      destinations.find((dest) =>
-        dest.name
-          .toLowerCase()
-          .startsWith(destinationInput.current.value.toLowerCase())
-      ) || editedEvent.destination;
-
-    setEditedEvent({ ...editedEvent, destination: newDestination });
-    destinationInput.current.value = newDestination.name;
-  };
-
   useEffect(() => {
     function closeOnEscape(evt) {
       if (evt.key === "Escape") {
@@ -137,15 +124,27 @@ function EventForm({ event, destinations, offers, dispatch }) {
               : "to"}
           </label>
           <input
-            ref={destinationInput}
             className="event__input  event__input--destination"
             id="event-destination-1"
             type="text"
             name="event-destination"
-            defaultValue={event?.destination?.name || ""}
-            onBlur={updateDestination}
+            value={editedEvent.destination?.name || ""}
+            onKeyDown={(evt) => {
+              if (evt.key !== "Backspace") {
+                evt.preventDefault();
+              }
+            }}
+            onChange={(evt) =>
+              setEditedEvent({
+                ...editedEvent,
+                destination: destinations.find(
+                  (dest) => dest.name === evt.target.value
+                )
+              })
+            }
             list="destination-list-1"
             required
+            autoComplete="off"
           />
           <datalist id="destination-list-1">
             {destinations.map((dest) => (

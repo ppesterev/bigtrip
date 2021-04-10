@@ -8,7 +8,6 @@ import StatsView from "./stats/StatsView";
 
 import { FilterOption, SortOption, View } from "../const";
 
-import useAsyncStore from "../hooks/use-async-store";
 import useExtendedReducer from "../hooks/use-extended-reducer";
 import reducer from "../store/reducer";
 import withProvider from "../middleware/with-provider";
@@ -17,7 +16,6 @@ import initialState from "../store/initial-state";
 import {
   setEventOptions,
   setEvents,
-  setToken,
   setFilter,
   setSorting,
   editEvent,

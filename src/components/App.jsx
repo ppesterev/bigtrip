@@ -23,7 +23,6 @@ import {
   editEvent,
   sync
 } from "../store/actions";
-import { getToken } from "../api/network";
 
 const PAGE_TITLE = "Big Trip";
 
@@ -38,7 +37,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    dispatch(setToken(getToken()));
     setIsLoading(true);
     Promise.all([dispatch(setEventOptions()), dispatch(setEvents())]).then(
       () => {

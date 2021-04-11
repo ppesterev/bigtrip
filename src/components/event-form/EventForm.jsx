@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 
 import Flatpickr from "react-flatpickr";
@@ -42,6 +42,11 @@ function EventForm({ event, destinations, offers, dispatch }) {
     return () => {
       document.removeEventListener("keydown", closeOnEscape);
     };
+  }, []);
+
+  const destinationInputRef = useRef(null);
+  useEffect(() => {
+    destinationInputRef.current.focus();
   }, []);
 
   const [status, setStatus] = useState(FormStatus.IDLE);
@@ -132,17 +137,12 @@ function EventForm({ event, destinations, offers, dispatch }) {
               ? "in"
               : "to"}
           </label>
-          <input
+          <select
+            ref={destinationInputRef}
             className="event__input  event__input--destination"
             id="event-destination-1"
-            type="text"
             name="event-destination"
-            value={editedEvent.destination?.name || ""}
-            onKeyDown={(evt) => {
-              if (evt.key !== "Backspace") {
-                evt.preventDefault();
-              }
-            }}
+            value={editedEvent.destination?.name || "..."}
             onChange={(evt) =>
               setEditedEvent({
                 ...editedEvent,
@@ -151,15 +151,15 @@ function EventForm({ event, destinations, offers, dispatch }) {
                 )
               })
             }
-            list="destination-list-1"
             required
-            autoComplete="off"
-          />
-          <datalist id="destination-list-1">
+          >
+            <option hidden disabled key="blank_option" value="..."></option>
             {destinations.map((dest) => (
-              <option value={dest.name} key={dest.name}></option>
+              <option value={dest.name} key={dest.name}>
+                {dest.name}
+              </option>
             ))}
-          </datalist>
+          </select>
         </div>
 
         <div className="event__field-group  event__field-group--time">
@@ -180,6 +180,7 @@ function EventForm({ event, destinations, offers, dispatch }) {
               dateFormat: "d/m/y H:i",
               maxDate: editedEvent.dateTo
             }}
+            required
           />
           &mdash;
           <label className="visually-hidden" htmlFor="event-end-time-1">

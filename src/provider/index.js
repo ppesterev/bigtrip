@@ -5,7 +5,7 @@ import NetworkAPI from "./network-api";
 
 import TripEvent from "../models/trip-event";
 import OfferCollection from "../models/offer-collection";
-import DestinationCollection from "../models/destination";
+import DestinationCollection from "../models/destination-collection";
 
 import { STORAGE_NAMESPACE } from "../const";
 

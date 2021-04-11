@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "parcel watch src/index.js -d public --public-url ./",
-    "build": "parcel build src/index.js -d public --public-url ./"
+    "build": "parcel build src/index.js -d public --public-url ./ --no-source-maps"
   },
   "keywords": [],
   "author": "",
@@ -29,5 +29,8 @@
   },
   "externals": [
     "moment"
+  ],
+  "browserslist": [
+    "> 0.5%, not ie 11, not op_mini all"
   ]
 }

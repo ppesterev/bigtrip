@@ -47,11 +47,9 @@ function App() {
     document.title = PAGE_TITLE + (navigator.onLine ? "" : " [Offline]");
 
     const onOffline = () => {
-      console.log("offline");
       document.title = PAGE_TITLE + " [Offline]";
     };
     const onOnline = () => {
-      console.log("online");
       document.title = PAGE_TITLE;
       dispatch(sync());
     };

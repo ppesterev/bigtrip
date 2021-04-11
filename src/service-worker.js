@@ -22,7 +22,6 @@ self.addEventListener("install", (evt) => {
 });
 
 self.addEventListener("activate", (evt) => {
-  console.log("Service worker activated");
   evt.waitUntil(
     caches
       .keys()

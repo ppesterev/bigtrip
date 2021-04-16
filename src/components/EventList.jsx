@@ -66,10 +66,14 @@ function EventList({
 
   return (
     <>
-      <SortForm {...{ sorting, dispatch }} />
+      <SortForm sorting={sorting} dispatch={dispatch} />
 
       {editedEvent?.id === null && (
-        <EventForm {...{ destinations, offers, dispatch }} />
+        <EventForm
+          destinations={destinations}
+          offers={offers}
+          dispatch={dispatch}
+        />
       )}
 
       <ul className="trip-days">
@@ -89,13 +93,11 @@ function EventList({
               )}
             </div>
             <EventSublist
-              {...{
-                events: sublist.events,
-                destinations,
-                offers,
-                editedEvent,
-                dispatch
-              }}
+              events={sublist.events}
+              destinations={destinations}
+              offers={offers}
+              editedEvent={editedEvent}
+              dispatch={dispatch}
             />
           </li>
         ))}

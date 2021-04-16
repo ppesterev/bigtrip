@@ -6,6 +6,7 @@ import StatsChart from "./StatsChart";
 
 import { types } from "../../const";
 import shapes from "../../shapes";
+import { capitalize } from "../../utils";
 
 const getEventTime = (event) =>
   dayjs(event.dateTo).diff(dayjs(event.dateFrom), "hour");
@@ -22,14 +23,19 @@ function TimeStats({ events }) {
     .filter((type) => type.time !== 0);
 
   const dataSeries = timeSpentByType.map((type) => type.time);
-  const labels = timeSpentByType.map((type) => type.type);
+  const labels = timeSpentByType.map((type) => capitalize(type.type));
 
   const options = {
     options: { plugins: { datalabels: { formatter: (val) => `${val}H` } } }
   };
 
   return (
-    <StatsChart {...{ title: "Time spent", dataSeries, labels, options }} />
+    <StatsChart
+      title="Time spent"
+      dataSeries={dataSeries}
+      labels={labels}
+      options={options}
+    />
   );
 }
 

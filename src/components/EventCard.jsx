@@ -43,11 +43,6 @@ function EventCard({ event, dispatch }) {
           </time>
         </p>
         <p className="event__duration">
-          {/* {dayjs
-            .duration(TripEvent.getDuration(event))
-            .format("D[d] H[h] m[m]")
-            .replaceAll(/\s?(?<![0-9])0[dhm]\s?/g, " ")
-            .trim()} */}
           {formatDuration(TripEvent.getDuration(event))}
         </p>
       </div>

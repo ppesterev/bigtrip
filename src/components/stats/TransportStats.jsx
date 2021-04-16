@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import StatsChart from "./StatsChart";
 
 import { TypeCategory, types } from "../../const";
-import { getTypeCategory } from "../../utils";
+import { capitalize, getTypeCategory } from "../../utils";
 import shapes from "../../shapes";
 
 function TransportStats({ events }) {
@@ -16,16 +16,8 @@ function TransportStats({ events }) {
     }))
     .filter((type) => type.count > 0);
 
-  // premature (and pointless) optimization
-  // const transportTypesByCount = events.reduce((typeMap, event) => {
-  //   if (getTypeCategory(event.type) !== TypeCategory.TRANSPORT) {
-  //     return typeMap;
-  //   }
-  //   return {...typeMap, ...{[event.type]: typeMap[event.type] + 1 || 1}};
-  // })
-
   const dataSeries = transportTypesByCount.map((type) => type.count);
-  const labels = transportTypesByCount.map((type) => type.type);
+  const labels = transportTypesByCount.map((type) => capitalize(type.type));
 
   const options = {
     options: { plugins: { datalabels: { formatter: (val) => `${val}x` } } }
@@ -33,7 +25,10 @@ function TransportStats({ events }) {
 
   return (
     <StatsChart
-      {...{ title: "Transport types", dataSeries, labels, options }}
+      title="Transport types"
+      dataSeries={dataSeries}
+      labels={labels}
+      options={options}
     />
   );
 }

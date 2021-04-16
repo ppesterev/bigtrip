@@ -5,6 +5,7 @@ import StatsChart from "./StatsChart";
 
 import { types } from "../../const";
 import shapes from "../../shapes";
+import { capitalize } from "../../utils";
 
 function MoneyStats({ events }) {
   const expensesByType = types
@@ -18,13 +19,20 @@ function MoneyStats({ events }) {
     .filter((type) => type.expense !== 0);
 
   const dataSeries = expensesByType.map((type) => type.expense);
-  const labels = expensesByType.map((type) => type.type);
+  const labels = expensesByType.map((type) => capitalize(type.type));
 
   const options = {
     options: { plugins: { datalabels: { formatter: (val) => `€ ${val}` } } }
   };
 
-  return <StatsChart {...{ title: "Expenses", dataSeries, labels, options }} />;
+  return (
+    <StatsChart
+      title="Expenses"
+      dataSeries={dataSeries}
+      labels={labels}
+      options={options}
+    />
+  );
 }
 
 MoneyStats.propTypes = {

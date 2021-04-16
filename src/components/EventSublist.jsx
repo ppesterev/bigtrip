@@ -12,9 +12,14 @@ function EventSublist({ events, destinations, offers, editedEvent, dispatch }) {
       {events.map((event) => (
         <li className="trip-events__item" key={event.id}>
           {event.id === editedEvent?.id ? (
-            <EventForm {...{ event, destinations, offers, dispatch }} />
+            <EventForm
+              event={event}
+              destinations={destinations}
+              offers={offers}
+              dispatch={dispatch}
+            />
           ) : (
-            <EventCard {...{ event, dispatch }} />
+            <EventCard event={event} dispatch={dispatch} />
           )}
         </li>
       ))}

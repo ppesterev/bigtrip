@@ -12,9 +12,9 @@ function StatsView({ events }) {
     <section className="statistics">
       <h2 className="visually-hidden">Trip statistics</h2>
 
-      <MoneyStats {...{ events }} />
-      <TransportStats {...{ events }} />
-      <TimeStats {...{ events }} />
+      <MoneyStats events={events} />
+      <TransportStats events={events} />
+      <TimeStats events={events} />
     </section>
   );
 }

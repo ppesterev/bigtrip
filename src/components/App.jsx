@@ -91,11 +91,13 @@ function App() {
 
             <div className="trip-main__trip-controls  trip-controls">
               <h2 className="visually-hidden">Switch trip view</h2>
-              <Menu {...{ activeView: store.view, dispatch }} />
+              <Menu activeView={store.view} dispatch={dispatch} />
 
               <h2 className="visually-hidden">Filter events</h2>
               <FilterForm
-                {...{ filteredEvents, filter: store.filter, dispatch }}
+                filteredEvents={filteredEvents}
+                filter={store.filter}
+                dispatch={dispatch}
               />
             </div>
 
@@ -123,14 +125,12 @@ function App() {
 
               {(events && events.length > 0) || store.editedEvent ? (
                 <EventList
-                  {...{
-                    events: filteredEvents[filter],
-                    destinations,
-                    offers,
-                    sorting: store.sorting,
-                    editedEvent: store.editedEvent,
-                    dispatch
-                  }}
+                  events={filteredEvents[filter]}
+                  destinations={destinations}
+                  offers={offers}
+                  sorting={store.sorting}
+                  editedEvent={store.editedEvent}
+                  dispatch={dispatch}
                 />
               ) : isLoading ? (
                 <p className="trip-events__msg">Loading...</p>
@@ -141,7 +141,7 @@ function App() {
               )}
             </section>
           )}
-          {store.view === View.STATS && <StatsView {...{ events }} />}
+          {store.view === View.STATS && <StatsView events={events} />}
         </div>
       </main>
     </>

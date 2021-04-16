@@ -5,9 +5,11 @@ import Chart from "chart.js";
 import deepmerge from "deepmerge";
 import { chartDefaultConfig } from "./chart-options";
 
+const CHART_WIDTH = 900;
 const BAR_WIDTH = 44;
 const GAP_WIDTH = 6;
 const MIN_BAR_LENGTH = 50;
+const BAR_COLOR = "#ffffff";
 
 function StatsChart({ title, dataSeries, labels, options }) {
   const config = options
@@ -25,14 +27,14 @@ function StatsChart({ title, dataSeries, labels, options }) {
         data: dataSeries,
         barThickness: BAR_WIDTH,
         minBarLength: MIN_BAR_LENGTH,
-        backgroundColor: "#ffffff",
-        hoverBackgroundColor: "#ffffff"
+        backgroundColor: BAR_COLOR,
+        hoverBackgroundColor: BAR_COLOR
       }
     ]
   };
 
   useEffect(() => {
-    canvas.current.width = 900;
+    canvas.current.width = CHART_WIDTH;
     canvas.current.height = dataSeries.length * (BAR_WIDTH + GAP_WIDTH);
     setChart(new Chart(canvas.current, { ...config, data }));
   }, []);

@@ -284,23 +284,22 @@ function EventForm({ event, destinations, offers, dispatch }) {
                     eventOffer.title === offer.title &&
                     eventOffer.price === offer.price
                 )}
-                onChange={(evt) => {
-                  if (evt.target.checked) {
-                    setEditedEvent((editedEvent) => ({
-                      ...editedEvent,
-                      offers: editedEvent.offers.concat(offer)
-                    }));
-                  } else {
-                    setEditedEvent((editedEvent) => ({
-                      ...editedEvent,
-                      offers: editedEvent.offers.filter(
-                        (eventOffer) =>
-                          eventOffer.price !== offer.price ||
-                          eventOffer.title !== offer.title
-                      )
-                    }));
-                  }
-                }}
+                onAdded={(offer) =>
+                  setEditedEvent((editedEvent) => ({
+                    ...editedEvent,
+                    offers: editedEvent.offers.concat(offer)
+                  }))
+                }
+                onRemoved={(offer) =>
+                  setEditedEvent((editedEvent) => ({
+                    ...editedEvent,
+                    offers: editedEvent.offers.filter(
+                      (eventOffer) =>
+                        eventOffer.price !== offer.price ||
+                        eventOffer.title !== offer.title
+                    )
+                  }))
+                }
               />
             ))}
           </div>

@@ -41,14 +41,14 @@ function EventList({
 
   if (sorting === SortOption.DEFAULT) {
     for (let i = 0; i < sortedEvents.length; i++) {
-      if (
-        // a ney day has started
+      const isNewDay =
         i === 0 ||
         !dayjs(sortedEvents[i - 1].dateFrom).isSame(
           sortedEvents[i].dateFrom,
           "day"
-        )
-      ) {
+        );
+
+      if (isNewDay) {
         // then add a new day object
         sublists.push({
           date: dayjs(sortedEvents[i].dateFrom).startOf("day"),

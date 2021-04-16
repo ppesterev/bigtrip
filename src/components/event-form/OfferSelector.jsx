@@ -5,7 +5,7 @@ import { nanoid } from "nanoid";
 
 import shapes from "../../shapes";
 
-function OfferSelector({ offer, value, onChange }) {
+function OfferSelector({ offer, value, onAdded, onRemoved }) {
   const inputId = useMemo(() => nanoid(6));
 
   return (
@@ -15,7 +15,10 @@ function OfferSelector({ offer, value, onChange }) {
         id={`event-offer-${inputId}`}
         type="checkbox"
         name="event-offer-luggage"
-        {...{ checked: value, onChange }}
+        checked={value}
+        onChange={(evt) =>
+          evt.target.checked ? onAdded(offer) : onRemoved(offer)
+        }
       />
       <label className="event__offer-label" htmlFor={`event-offer-${inputId}`}>
         <span className="event__offer-title">{offer.title}</span>
@@ -29,7 +32,8 @@ function OfferSelector({ offer, value, onChange }) {
 OfferSelector.propTypes = {
   offer: shapes.offer,
   value: PropTypes.bool,
-  onChange: PropTypes.func
+  onAdded: PropTypes.func,
+  onRemoved: PropTypes.func
 };
 
 export default React.memo(OfferSelector);

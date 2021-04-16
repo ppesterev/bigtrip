@@ -83,4 +83,4 @@ TypeSelector.propTypes = {
   onChange: PropTypes.func
 };
 
-export default TypeSelector;
+export default React.memo(TypeSelector);

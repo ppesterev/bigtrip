@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 
 import Flatpickr from "react-flatpickr";
@@ -89,6 +89,11 @@ function EventForm({ event, destinations, offers, dispatch }) {
     applyChanges(action, FormStatus.FAVORITING);
   };
 
+  const onTypeSelected = useCallback(
+    (value) => setEditedEvent({ ...editedEvent, type: value, offers: [] }),
+    [editedEvent]
+  );
+
   const validateEvent = (event) => {
     return (
       event.dateTo &&
@@ -120,12 +125,7 @@ function EventForm({ event, destinations, offers, dispatch }) {
       }}
     >
       <header className="event__header">
-        <TypeSelector
-          type={editedEvent.type}
-          onChange={(value) =>
-            setEditedEvent({ ...editedEvent, type: value, offers: [] })
-          }
-        />
+        <TypeSelector type={editedEvent.type} onChange={onTypeSelected} />
 
         <div className="event__field-group  event__field-group--destination">
           <label

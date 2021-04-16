@@ -32,4 +32,4 @@ OfferSelector.propTypes = {
   onChange: PropTypes.func
 };
 
-export default OfferSelector;
+export default React.memo(OfferSelector);

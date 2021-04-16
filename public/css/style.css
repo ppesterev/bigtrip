@@ -964,6 +964,11 @@ main {
   color: rgba(255, 208, 84, 0.6);
 }
 
+.event__favorite-checkbox:focus + .event__favorite-btn {
+  outline: auto;
+  outline-color: black;
+}
+
 .event__favorite-checkbox:checked + .event__favorite-btn {
   color: #ffd054;
 }
@@ -1062,6 +1067,10 @@ main {
 }
 .event__offer-label:hover {
   background-color: rgba(13, 138, 228, 0.6);
+}
+
+.event__offer-checkbox:focus + .event__offer-label {
+  outline: auto;
 }
 
 .event__offer-checkbox:checked + .event__offer-label {

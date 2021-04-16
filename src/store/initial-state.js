@@ -1,7 +1,6 @@
 import { FilterOption, SortOption, View } from "../const";
 
 const initialState = {
-  token: null,
   events: [],
   offers: {},
   destinations: [],

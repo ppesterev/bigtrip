@@ -51,11 +51,6 @@ export default function reducer(state, action) {
         ...state,
         sorting: action.payload.sorting
       };
-    case ActionType.SET_TOKEN:
-      return {
-        ...state,
-        token: action.payload.token
-      };
   }
   return {
     ...state,

@@ -19,8 +19,6 @@ export const ActionType = {
 
 const createAction = (type, payload) => ({ type, payload });
 
-export const setToken = (token) =>
-  createAction(ActionType.SET_TOKEN, { token });
 export const setEventOptions = (offers, destinations) =>
   createAction(ActionType.SET_EVENT_OPTIONS, { offers, destinations });
 export const setEvents = (events) =>
